@@ -6,7 +6,7 @@ proxy-providers:
     interval: 86400
     health-check:
       enable: true
-      url: http://captive.apple.com/
+      url: https://www.gstatic.com/generate_204
       interval: 300
     proxy: DIRECT
     url: "订阅链接1"
@@ -45,8 +45,8 @@ geox-url:
   
 # 控制面板
 external-controller: 0.0.0.0:9090  # RESTful API 监听地址
-secret: ""
-external-ui: ui
+# secret: ""
+# external-ui: ui
 # external-ui-url: "https://github.com/Zephyruso/zashboard/archive/refs/heads/gh-pages.zip"
 # 下载面板地址可更换：https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip
 

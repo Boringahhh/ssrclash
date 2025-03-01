@@ -1,7 +1,20 @@
-# 机场订阅，Airport_01/02/03名称不能重复
+# 机场订阅，订阅1,订阅2 可以自定名字
 
 proxy-providers:
-  Airport_01:
+  订阅1:
+    type: http
+    interval: 86400
+    health-check:
+      enable: true
+      url: https://www.gstatic.com/generate_204
+      interval: 300
+    proxy: DIRECT
+    url: "订阅链接1"
+    override:
+      additional-prefix: "[机场名称1]"
+      skip-cert-verify: true  # 绕过证书验证
+      udp: true # 开启udp
+  订阅2:
     type: http
     interval: 86400
     health-check:
@@ -109,7 +122,7 @@ dns:
   # 黑名单模式表示如果匹配成功则不返回 Fake-IP, 白名单模式时只有匹配成功才返回 Fake-IP
   fake-ip-filter-mode: blacklist
   fake-ip-filter:
-    - "rule-set:private_domain,cn_domain"
+    - "rule-set:Lan_domain,Custom_Direct,Direct_domain,XiaoMi_domain,IPTVMainland_Domain,Download_domain"
     - "+.services.googleapis.cn"
     - "+.xn--ngstr-lra8j.com"
     - "time.*.com"

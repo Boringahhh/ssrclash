@@ -252,7 +252,6 @@ rule-providers:
   IPTVMainland_Domain: { <<: *class, url: "https://raw.githubusercontent.com/Aethersailor/Custom_OpenClash_Rules/refs/heads/main/rule/IPTVMainland_Domain.list"}
   GlobalMedia_domain: { <<: *domain, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/refs/heads/master/rule/Clash/GlobalMedia/GlobalMedia_OCD_Domain.mrs"}
   Download_domain: { <<: *domain, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/refs/heads/master/rule/Clash/Download/Download_OCD_Domain.mrs"}
-
   
   Lan_ip: { <<: *ip, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/refs/heads/master/rule/Clash/Lan/Lan_OCD_IP.mrs"}
   Telegram_ip: { <<: *ip, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/refs/heads/master/rule/Clash/Telegram/Telegram_OCD_IP.mrs"}

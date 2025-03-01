@@ -47,7 +47,7 @@ authentication:
   
 geodata-mode: false   # GEO模式：true使用geoip.dat数据库,false使用mmdb数据库
 # GEO 文件加载模式（standard：标准加载器/memconservative：专为内存受限 (小内存) 设备优化的加载器 (默认值)）
-geodata-loader: standard
+geodata-loader: memconservative
 geo-auto-update: true  # 是否自动更新 geodata
 geo-update-interval: 48  # 更新间隔，单位：小时
 geox-url:
@@ -142,16 +142,22 @@ dns:
     - 119.29.29.29
 
 
-# 锚点
-pr1: &pr1 {type: select, proxies: [DIRECT, 🚀 节点选择, 🇺🇲 美国节点, 🇭🇰 香港节点, 🇨🇳 台湾节点, 🇸🇬 狮城节点, 🇯🇵 日本节点, 🇰🇷 韩国节点, 🇭🇰 香港低倍率, 🇯🇵 日本低倍率, 🇺🇲 美国低倍率, 🇨🇳 台湾低倍率, 🇸🇬 狮城低倍率, 🚀 手动切换]}
-pr2: &pr2 {type: select, proxies: [🚀 节点选择, ♻️ 自动选择, 🇸🇬 狮城节点, 🇭🇰 香港节点, 🇨🇳 台湾节点, 🇯🇵 日本节点, 🇺🇲 美国节点, 🇰🇷 韩国节点, 🇭🇰 香港低倍率, 🇯🇵 日本低倍率, 🇺🇲 美国低倍率, 🇨🇳 台湾低倍率, 🇸🇬 狮城低倍率, 🚀 手动切换, DIRECT]}
+# 策略组锚点
+pr1: &pr1 {type: select, proxies: [DIRECT, 🚀 节点选择, 🇺🇸 美国节点, 🇭🇰 香港节点, 🇨🇳 台湾节点, 🇸🇬 狮城节点, 🇯🇵 日本节点, 🇰🇷 韩国节点, 🇭🇰 香港低倍率, 🇯🇵 日本低倍率, 🇺🇸 美国低倍率, 🇨🇳 台湾低倍率, 🇸🇬 狮城低倍率, 🚀 手动切换]}
+pr2: &pr2 {type: select, proxies: [🚀 节点选择, ♻️ 自动选择, 🇸🇬 狮城节点, 🇭🇰 香港节点, 🇨🇳 台湾节点, 🇯🇵 日本节点, 🇺🇸 美国节点, 🇰🇷 韩国节点, 🇭🇰 香港低倍率, 🇯🇵 日本低倍率, 🇺🇸 美国低倍率, 🇨🇳 台湾低倍率, 🇸🇬 狮城低倍率, 🚀 手动切换, DIRECT]}
+
+# 代理组锚点
+UrlTest: &UrlTest {type: url-test, interval: 300, tolerance: 20, lazy: true, url: 'http://www.gstatic.com/generate_204', disable-udp: false, timeout: 2000, max-failed-times: 3, include-all-providers: true}
+FallBack: &FallBack {type: fallback, interval: 300, lazy: true, url: 'http://www.gstatic.com/generate_204', disable-udp: false, timeout: 2000, max-failed-times: 3, include-all-providers: true}
+LoadBalance: &LoadBalance {type: load-balance, interval: 300, lazy: true, url: 'http://www.gstatic.com/generate_204', disable-udp: false, strategy: consistent-hashing, timeout: 2000, max-failed-times: 3, include-all-providers: true}
+
 # 策略组
 proxy-groups:
-  - {name: 🚀 节点选择, type: select, proxies: [♻️ 自动选择, 🔯 故障转移, 🔮 负载均衡, 🇭🇰 香港节点, 🇨🇳 台湾节点, 🇸🇬 狮城节点, 🇯🇵 日本节点, 🇺🇲 美国节点, 🇰🇷 韩国节点, 🚀 手动切换, DIRECT]}
+  - {name: 🚀 节点选择, type: select, proxies: [♻️ 自动选择, 🔯 故障转移, 🔮 负载均衡, 🇭🇰 香港节点, 🇨🇳 台湾节点, 🇸🇬 狮城节点, 🇯🇵 日本节点, 🇺🇸 美国节点, 🇰🇷 韩国节点, 🚀 手动切换, DIRECT]}
   - {name: 🚀 手动切换, type: select, include-all: true}
-  - {name: ♻️ 自动选择, type: url-test, include-all: true, tolerance: 20, interval: 300}
-  - {name: 🔯 故障转移, type: fallback, include-all: true, tolerance: 20, interval: 300}
-  - {name: 🔮 负载均衡, type: load-balance, include-all: true, tolerance: 20, interval: 300}
+  - {name: ♻️ 自动选择, <<: *UrlTest}
+  - {name: 🔯 故障转移, <<: *FallBack}
+  - {name: 🔮 负载均衡, <<: *LoadBalance}
   - {name: 📺 Emby影院, <<: *pr2}
   - {name: 📲 电报消息, <<: *pr2}
   - {name: 💬 OpenAi, <<: *pr2}
@@ -169,26 +175,26 @@ proxy-groups:
   - {name: 🎮 游戏平台, <<: *pr1}
   - {name: 🎯 全球直连, type: select, proxies: [DIRECT, 🚀 手动切换, ♻️ 自动选择]}
   - {name: 🐟 漏网之鱼, <<: *pr2}
-  - {name: 🇭🇰 香港节点, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?i)(港|HK|hk|Hong Kong|HongKong|hongkong)(?!.*2\\.00x)"}
-  - {name: 🇯🇵 日本节点, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?i)(日本|川日|东京|大阪|泉日|埼玉|沪日|深日|JP|Japan)(?!.*2\\.00x)"}
-  - {name: 🇺🇲 美国节点, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?i)(美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|US|United States)(?!.*2\\.00x)"}
-  - {name: 🇨🇳 台湾节点, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?i)(台|新北|彰化|TW|Taiwan)(?!.*2\\.00x)"}
-  - {name: 🇸🇬 狮城节点, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?i)(新加坡|坡|狮城|SG|Singapore)(?!.*2\\.00x)"}
-  - {name: 🇰🇷 韩国节点, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?i)(KR|Korea|KOR|首尔|韩|韓)(?!.*2\\.00x)"}
+  - {name: 🇭🇰 香港节点, <<: *UrlTest, filter: "(?i)(港|HK|hk|Hong Kong|HongKong|hongkong)(?!.*2\\.00x)"}
+  - {name: 🇯🇵 日本节点, <<: *UrlTest, filter: "(?i)(日本|川日|东京|大阪|泉日|埼玉|沪日|深日|JP|Japan)(?!.*2\\.00x)"}
+  - {name: 🇺🇸 美国节点, <<: *UrlTest, filter: "(?i)(美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|US|United States)(?!.*2\\.00x)"}
+  - {name: 🇨🇳 台湾节点, <<: *UrlTest, filter: "(?i)(台|新北|彰化|TW|Taiwan)(?!.*2\\.00x)"}
+  - {name: 🇸🇬 狮城节点, <<: *UrlTest, filter: "(?i)(新加坡|坡|狮城|SG|Singapore)(?!.*2\\.00x)"}
+  - {name: 🇰🇷 韩国节点, <<: *UrlTest, filter: "(?i)(KR|Korea|KOR|首尔|韩|韓)(?!.*2\\.00x)"}
 
-  - {name: 🇭🇰 香港低倍率, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?i)(港|HK|hk|Hong Kong|HongKong|hongkong)(?=.*0\\.20x)"}
-  - {name: 🇯🇵 日本低倍率, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?i)(日本|川日|东京|大阪|泉日|埼玉|沪日|深日|JP|Japan)"}
-  - {name: 🇺🇲 美国低倍率, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?i)(美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|US|United States)(?=.*0\\.20x)"}
-  - {name: 🇨🇳 台湾低倍率, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?i)(台|新北|彰化|TW|Taiwan)(?=.*0\\.20x)"}
-  - {name: 🇸🇬 狮城低倍率, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?i)(新加坡|坡|狮城|SG|Singapore)(?=.*0\\.20x)"}
-  - {name: 🇰🇷 韩国低倍率, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?i)(KR|Korea|KOR|首尔|韩|韓)(?=.*0\\.20x)"}
+  - {name: 🇭🇰 香港低倍率, <<: *UrlTest, filter: "(?i)(港|HK|hk|Hong Kong|HongKong|hongkong)(?=.*0\\.20x)"}
+  - {name: 🇯🇵 日本低倍率, <<: *UrlTest, filter: "(?i)(日本|川日|东京|大阪|泉日|埼玉|沪日|深日|JP|Japan)"}
+  - {name: 🇺🇸 美国低倍率, <<: *UrlTest, filter: "(?i)(美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|US|United States)(?=.*0\\.20x)"}
+  - {name: 🇨🇳 台湾低倍率, <<: *UrlTest, filter: "(?i)(台|新北|彰化|TW|Taiwan)(?=.*0\\.20x)"}
+  - {name: 🇸🇬 狮城低倍率, <<: *UrlTest, filter: "(?i)(新加坡|坡|狮城|SG|Singapore)(?=.*0\\.20x)"}
+  - {name: 🇰🇷 韩国低倍率, <<: *UrlTest, filter: "(?i)(KR|Korea|KOR|首尔|韩|韓)(?=.*0\\.20x)"}
 
-  - {name: 🇭🇰 香港高倍率, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?i)(港|HK|hk|Hong Kong|HongKong|hongkong)(?=.*2\\.00x)"}
-  - {name: 🇯🇵 日本高倍率, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?i)(日本|川日|东京|大阪|泉日|埼玉|沪日|深日|JP|Japan)(?=.*2\\.00x)"}
-  - {name: 🇺🇲 美国高倍率, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?i)(美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|US|United States)(?=.*2\\.00x)"}
-  - {name: 🇨🇳 台湾高倍率, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?i)(台|新北|彰化|TW|Taiwan)(?=.*2\\.00x)"}
-  - {name: 🇸🇬 狮城高倍率, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?i)(新加坡|坡|狮城|SG|Singapore)(?=.*2\\.00x)"}
-  - {name: 🇰🇷 韩国高倍率, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?i)(KR|Korea|KOR|首尔|韩|韓)(?=.*2\\.00x)"}
+  - {name: 🇭🇰 香港高倍率, <<: *UrlTest, filter: "(?i)(港|HK|hk|Hong Kong|HongKong|hongkong)(?=.*2\\.00x)"}
+  - {name: 🇯🇵 日本高倍率, <<: *UrlTest, filter: "(?i)(日本|川日|东京|大阪|泉日|埼玉|沪日|深日|JP|Japan)(?=.*2\\.00x)"}
+  - {name: 🇺🇸 美国高倍率, <<: *UrlTest, filter: "(?i)(美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|US|United States)(?=.*2\\.00x)"}
+  - {name: 🇨🇳 台湾高倍率, <<: *UrlTest, filter: "(?i)(台|新北|彰化|TW|Taiwan)(?=.*2\\.00x)"}
+  - {name: 🇸🇬 狮城高倍率, <<: *UrlTest, filter: "(?i)(新加坡|坡|狮城|SG|Singapore)(?=.*2\\.00x)"}
+  - {name: 🇰🇷 韩国高倍率, <<: *UrlTest, filter: "(?i)(KR|Korea|KOR|首尔|韩|韓)(?=.*2\\.00x)"}
 rules: 
   - RULE-SET,Lan_domain,🎯 全球直连
   - RULE-SET,Lan_ip,🎯 全球直连,no-resolve

@@ -61,8 +61,8 @@ geox-url:
 external-controller: 0.0.0.0:9090  # RESTful API 监听地址
 # secret: ""
 # external-ui: ui
-# external-ui-url: "https://github.com/Zephyruso/zashboard/archive/refs/heads/gh-pages.zip"
-# 下载面板地址可更换：https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip
+# external-ui-url: "https://github.com/Zephyruso/zashboard/archive/gh-pages.zip"
+# 下载面板地址可更换：https://github.com/MetaCubeX/metacubexd/archive/gh-pages.zip
 
 # 匹配进程 always/strict/off
 find-process-mode: strict
@@ -148,7 +148,7 @@ pr1: &pr1 {type: select, proxies: [DIRECT, 🚀 节点选择, 🇺🇸 美国节
 pr2: &pr2 {type: select, proxies: [🚀 节点选择, ♻️ 自动选择, 🇸🇬 狮城节点, 🇭🇰 香港节点, 🇨🇳 台湾节点, 🇯🇵 日本节点, 🇺🇸 美国节点, 🇰🇷 韩国节点, 🚀 手动切换, DIRECT]}
 
 # 代理组锚点
-UrlTest: &UrlTest {type: url-test, interval: 300, tolerance: 20, lazy: true, url: 'http://www.gstatic.com/generate_204', disable-udp: false, timeout: 2000, max-failed-times: 3, include-all-providers: true}
+UrlTest: &UrlTest {type: url-test, interval: 300, tolerance: 20, url: 'http://www.gstatic.com/generate_204', disable-udp: false, timeout: 2000, max-failed-times: 3, include-all-providers: true}
 FallBack: &FallBack {type: fallback, interval: 300, lazy: true, url: 'http://www.gstatic.com/generate_204', disable-udp: false, timeout: 2000, max-failed-times: 3, include-all-providers: true}
 LoadBalance: &LoadBalance {type: load-balance, interval: 300, lazy: true, url: 'http://www.gstatic.com/generate_204', disable-udp: false, strategy: consistent-hashing, timeout: 2000, max-failed-times: 3, include-all-providers: true}
 
@@ -225,8 +225,9 @@ rules:
   - RULE-SET,Netflix_domain,🎥 奈飞视频
   - RULE-SET,Netflix_ip,🎥 奈飞视频,no-resolve
   - RULE-SET,Bahamut_domain,📺 巴哈姆特
-  - RULE-SET,BilibiliHMT,📺 哔哩哔哩
-  - RULE-SET,Bilibili,📺 哔哩哔哩
+  - RULE-SET,Biliintl_domain,📺 哔哩哔哩
+  - RULE-SET,Bilibili_domain,📺 哔哩哔哩
+  - RULE-SET,Bilibili_ip,📺 哔哩哔哩,no-resolve
   - RULE-SET,ChinaMedia_domain,🌏 国内媒体
   - RULE-SET,ChinaMedia_ip,🌏 国内媒体,no-resolve
   - RULE-SET,IPTVMainland_Domain,🎯 全球直连
@@ -241,45 +242,46 @@ rule-anchor:
   domain: &domain {type: http, interval: 86400, behavior: domain, format: mrs}
   class: &class {type: http, interval: 86400, behavior: classical, format: text}
 rule-providers: 
-  Lan_domain: { <<: *domain, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/refs/heads/master/rule/Clash/Lan/Lan_OCD_Domain.mrs"}
+  Lan_domain: { <<: *domain, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/Lan/Lan_OCD_Domain.mrs"}
   Custom_Direct: { <<: *class, url: "https://raw.githubusercontent.com/Aethersailor/Custom_OpenClash_Rules/main/rule/Custom_Direct.list"}
   Custom_Proxy: { <<: *class, url: "https://raw.githubusercontent.com/Aethersailor/Custom_OpenClash_Rules/main/rule/Custom_Proxy.list"}
-  Direct_domain: { <<: *domain, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/refs/heads/master/rule/Clash/Direct/Direct_OCD_Domain.mrs"}
+  Direct_domain: { <<: *domain, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/Direct/Direct_OCD_Domain.mrs"}
   GoogleCNProxyIP: { <<: *class, url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/GoogleCNProxyIP.list"}
   Steam_CDN: { <<: *class, url: "https://raw.githubusercontent.com/Aethersailor/Custom_OpenClash_Rules/main/rule/Steam_CDN.list"}
   Game_Download_CDN: { <<: *class, url: "https://raw.githubusercontent.com/Aethersailor/Custom_OpenClash_Rules/main/rule/Game_Download_CDN.list"}
 
-  Telegram_domain: { <<: *domain, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/refs/heads/master/rule/Clash/Telegram/Telegram_OCD_Domain.mrs"}
-  OpenAI_domain: { <<: *domain, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/refs/heads/master/rule/Clash/OpenAI/OpenAI_OCD_Domain.mrs"}
-  YouTube_domain: { <<: *domain, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/refs/heads/master/rule/Clash/YouTube/YouTube_OCD_Domain.mrs"}
-  Apple_domain: { <<: *domain, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/refs/heads/master/rule/Clash/Apple/Apple_OCD_Domain.mrs"}
-  Bing_domain: { <<: *domain, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/refs/heads/master/rule/Clash/Bing/Bing_OCD_Domain.mrs"}
-  OneDrive_domain: { <<: *domain, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/refs/heads/master/rule/Clash/OneDrive/OneDrive_OCD_Domain.mrs"}
-  Microsoft_domain: { <<: *domain, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/refs/heads/master/rule/Clash/Microsoft/Microsoft_OCD_Domain.mrs"}
-  XiaoMi_domain: { <<: *domain, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/refs/heads/master/rule/Clash/XiaoMi/XiaoMi_OCD_Domain.mrs"}
-  GoogleFCM_domain: { <<: *domain, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/refs/heads/master/rule/Clash/GoogleFCM/GoogleFCM_OCD_Domain.mrs"}
-  Epic_domain: { <<: *domain, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/refs/heads/master/rule/Clash/Epic/Epic_OCD_Domain.mrs"}
-  Origin_domain: { <<: *domain, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/refs/heads/master/rule/Clash/Origin/Origin_OCD_Domain.mrs"}
-  Sony_domain: { <<: *domain, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/refs/heads/master/rule/Clash/Sony/Sony_OCD_Domain.mrs"}
-  Steam_domain: { <<: *domain, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/refs/heads/master/rule/Clash/Steam/Steam_OCD_Domain.mrs"}
-  Nintendo_domain: { <<: *domain, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/refs/heads/master/rule/Clash/Nintendo/Nintendo_OCD_Domain.mrs"}
-  Netflix_domain: { <<: *domain, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/refs/heads/master/rule/Clash/Netflix/Netflix_OCD_Domain.mrs"}
-  Bahamut_domain: { <<: *domain, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/refs/heads/master/rule/Clash/Bahamut/Bahamut_OCD_Domain.mrs"}
-  BilibiliHMT: { <<: *class, url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/BilibiliHMT.list"}
-  Bilibili: { <<: *class, url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/Bilibili.list"}
-  ChinaMedia_domain: { <<: *domain, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/refs/heads/master/rule/Clash/ChinaMedia/ChinaMedia_OCD_Domain.mrs"}
-  IPTVMainland_Domain: { <<: *class, url: "https://raw.githubusercontent.com/Aethersailor/Custom_OpenClash_Rules/refs/heads/main/rule/IPTVMainland_Domain.list"}
-  GlobalMedia_domain: { <<: *domain, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/refs/heads/master/rule/Clash/GlobalMedia/GlobalMedia_OCD_Domain.mrs"}
-  Download_domain: { <<: *domain, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/refs/heads/master/rule/Clash/Download/Download_OCD_Domain.mrs"}
+  Telegram_domain: { <<: *domain, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/Telegram/Telegram_OCD_Domain.mrs"}
+  OpenAI_domain: { <<: *domain, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/OpenAI/OpenAI_OCD_Domain.mrs"}
+  YouTube_domain: { <<: *domain, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/YouTube/YouTube_OCD_Domain.mrs"}
+  Apple_domain: { <<: *domain, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/Apple/Apple_OCD_Domain.mrs"}
+  Bing_domain: { <<: *domain, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/Bing/Bing_OCD_Domain.mrs"}
+  OneDrive_domain: { <<: *domain, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/OneDrive/OneDrive_OCD_Domain.mrs"}
+  Microsoft_domain: { <<: *domain, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/Microsoft/Microsoft_OCD_Domain.mrs"}
+  XiaoMi_domain: { <<: *domain, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/XiaoMi/XiaoMi_OCD_Domain.mrs"}
+  GoogleFCM_domain: { <<: *domain, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/GoogleFCM/GoogleFCM_OCD_Domain.mrs"}
+  Epic_domain: { <<: *domain, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/Epic/Epic_OCD_Domain.mrs"}
+  Origin_domain: { <<: *domain, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/Origin/Origin_OCD_Domain.mrs"}
+  Sony_domain: { <<: *domain, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/Sony/Sony_OCD_Domain.mrs"}
+  Steam_domain: { <<: *domain, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/Steam/Steam_OCD_Domain.mrs"}
+  Nintendo_domain: { <<: *domain, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/Nintendo/Nintendo_OCD_Domain.mrs"}
+  Netflix_domain: { <<: *domain, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/Netflix/Netflix_OCD_Domain.mrs"}
+  Bahamut_domain: { <<: *domain, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/Bahamut/Bahamut_OCD_Domain.mrs"}
+  Biliintl_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/biliintl.mrs"}
+  Bilibili_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/bilibili.mrs"}
+  ChinaMedia_domain: { <<: *domain, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/ChinaMedia/ChinaMedia_OCD_Domain.mrs"}
+  IPTVMainland_Domain: { <<: *domain, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/IPTVMainland/IPTVMainland_OCD_Domain.mrs"}
+  GlobalMedia_domain: { <<: *domain, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/GlobalMedia/GlobalMedia_OCD_Domain.mrs"}
+  Download_domain: { <<: *domain, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/Download/Download_OCD_Domain.mrs"}
 
-  Lan_ip: { <<: *ip, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/refs/heads/master/rule/Clash/Lan/Lan_OCD_IP.mrs"}
-  Telegram_ip: { <<: *ip, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/refs/heads/master/rule/Clash/Telegram/Telegram_OCD_IP.mrs"}
-  OpenAI_ip: { <<: *ip, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/refs/heads/master/rule/Clash/OpenAI/OpenAI_OCD_IP.mrs"}
-  YouTube_ip: { <<: *ip, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/refs/heads/master/rule/Clash/YouTube/YouTube_OCD_IP.mrs"}
-  Apple_ip: { <<: *ip, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/refs/heads/master/rule/Clash/Apple/Apple_OCD_IP.mrs"}
-  XiaoMi_ip: { <<: *ip, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/refs/heads/master/rule/Clash/XiaoMi/XiaoMi_OCD_IP.mrs"}
-  GoogleFCM_ip: { <<: *ip, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/refs/heads/master/rule/Clash/GoogleFCM/GoogleFCM_OCD_IP.mrs"}
-  Nintendo_ip: { <<: *ip, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/refs/heads/master/rule/Clash/Nintendo/Nintendo_OCD_IP.mrs"}
-  Netflix_ip: { <<: *ip, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/refs/heads/master/rule/Clash/Netflix/Netflix_OCD_IP.mrs"}
-  ChinaMedia_ip: { <<: *ip, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/refs/heads/master/rule/Clash/ChinaMedia/ChinaMedia_OCD_IP.mrs"}
-  GlobalMedia_ip: { <<: *ip, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/refs/heads/master/rule/Clash/GlobalMedia/GlobalMedia_OCD_IP.mrs"}
+  Lan_ip: { <<: *ip, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/Lan/Lan_OCD_IP.mrs"}
+  Telegram_ip: { <<: *ip, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/Telegram/Telegram_OCD_IP.mrs"}
+  OpenAI_ip: { <<: *ip, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/OpenAI/OpenAI_OCD_IP.mrs"}
+  YouTube_ip: { <<: *ip, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/YouTube/YouTube_OCD_IP.mrs"}
+  Apple_ip: { <<: *ip, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/Apple/Apple_OCD_IP.mrs"}
+  XiaoMi_ip: { <<: *ip, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/XiaoMi/XiaoMi_OCD_IP.mrs"}
+  GoogleFCM_ip: { <<: *ip, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/GoogleFCM/GoogleFCM_OCD_IP.mrs"}
+  Nintendo_ip: { <<: *ip, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/Nintendo/Nintendo_OCD_IP.mrs"}
+  Netflix_ip: { <<: *ip, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/Netflix/Netflix_OCD_IP.mrs"}
+  Bilibili_ip: { <<: *ip, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo-lite/geoip/bilibili.mrs"}
+  ChinaMedia_ip: { <<: *ip, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/ChinaMedia/ChinaMedia_OCD_IP.mrs"}
+  GlobalMedia_ip: { <<: *ip, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/GlobalMedia/GlobalMedia_OCD_IP.mrs"}

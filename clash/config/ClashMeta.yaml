@@ -148,7 +148,7 @@ pr1: &pr1 {type: select, proxies: [DIRECT, 🚀 节点选择, 🇺🇸 美国节
 pr2: &pr2 {type: select, proxies: [🚀 节点选择, ♻️ 自动选择, 🇸🇬 狮城节点, 🇭🇰 香港节点, 🇨🇳 台湾节点, 🇯🇵 日本节点, 🇺🇸 美国节点, 🇰🇷 韩国节点, 🚀 手动切换, DIRECT]}
 
 # 代理组锚点
-UrlTest: &UrlTest {type: url-test, interval: 300, tolerance: 20, lazy: true, url: 'http://www.gstatic.com/generate_204', disable-udp: false, timeout: 2000, max-failed-times: 3, include-all-providers: true}
+UrlTest: &UrlTest {type: url-test, interval: 300, tolerance: 20, url: 'http://www.gstatic.com/generate_204', disable-udp: false, timeout: 2000, max-failed-times: 3, include-all-providers: true}
 FallBack: &FallBack {type: fallback, interval: 300, lazy: true, url: 'http://www.gstatic.com/generate_204', disable-udp: false, timeout: 2000, max-failed-times: 3, include-all-providers: true}
 LoadBalance: &LoadBalance {type: load-balance, interval: 300, lazy: true, url: 'http://www.gstatic.com/generate_204', disable-udp: false, strategy: consistent-hashing, timeout: 2000, max-failed-times: 3, include-all-providers: true}
 

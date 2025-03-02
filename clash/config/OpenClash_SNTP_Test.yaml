@@ -1,3 +1,4 @@
+# Openclash使用，搭配绕过大陆
 # 机场订阅，订阅1,订阅2 可以自定名字
 
 proxy-providers:
@@ -47,7 +48,7 @@ authentication:
   
 geodata-mode: false   # GEO模式：true使用geoip.dat数据库,false使用mmdb数据库
 # GEO 文件加载模式（standard：标准加载器/memconservative：专为内存受限 (小内存) 设备优化的加载器 (默认值)）
-geodata-loader: memconservative
+geodata-loader: standard
 geo-auto-update: true  # 是否自动更新 geodata
 geo-update-interval: 48  # 更新间隔，单位：小时
 geox-url:

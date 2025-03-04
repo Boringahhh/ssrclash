@@ -25,9 +25,9 @@ proxy-providers:
       url: http://www.gstatic.com/generate_204
       interval: 300
     proxy: DIRECT
-    url: "订阅链接1"
+    url: "订阅链接2"
     override:
-      additional-prefix: "[机场名称1]"
+      additional-prefix: "[机场名称2]"
       skip-cert-verify: true  # 绕过证书验证
       udp: true # 开启udp
       

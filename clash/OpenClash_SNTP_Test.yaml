@@ -152,10 +152,14 @@ dns:
     - "https://dns.cloudflare.com/dns-query"
     - "https://dns.google/dns-query"
 
+proxies:
+- name: "🎯 DIRECT"
+  type: direct
+  udp: true
 
 # 策略组锚点
-pr1: &pr1 {type: select, proxies: [DIRECT, 🚀 节点选择, 🇺🇸 美国节点, 🇭🇰 香港节点, 🇨🇳 台湾节点, 🇸🇬 狮城节点, 🇯🇵 日本节点, 🇰🇷 韩国节点, 🇭🇰 香港低倍率, 🇯🇵 日本低倍率, 🇺🇸 美国低倍率, 🇨🇳 台湾低倍率, 🇸🇬 狮城低倍率, 🚀 手动切换]}
-pr2: &pr2 {type: select, proxies: [🚀 节点选择, ♻️ 自动选择, 🇸🇬 狮城节点, 🇭🇰 香港节点, 🇨🇳 台湾节点, 🇯🇵 日本节点, 🇺🇸 美国节点, 🇰🇷 韩国节点, 🇭🇰 香港低倍率, 🇯🇵 日本低倍率, 🇺🇸 美国低倍率, 🇨🇳 台湾低倍率, 🇸🇬 狮城低倍率, 🚀 手动切换, DIRECT]}
+pr1: &pr1 {type: select, proxies: [🎯 DIRECT, 🚀 节点选择, 🇺🇸 美国节点, 🇭🇰 香港节点, 🇨🇳 台湾节点, 🇸🇬 狮城节点, 🇯🇵 日本节点, 🇰🇷 韩国节点, 🇭🇰 香港低倍率, 🇯🇵 日本低倍率, 🇺🇸 美国低倍率, 🇨🇳 台湾低倍率, 🇸🇬 狮城低倍率, 🚀 手动切换]}
+pr2: &pr2 {type: select, proxies: [🚀 节点选择, ♻️ 自动选择, 🇸🇬 狮城节点, 🇭🇰 香港节点, 🇨🇳 台湾节点, 🇯🇵 日本节点, 🇺🇸 美国节点, 🇰🇷 韩国节点, 🇭🇰 香港低倍率, 🇯🇵 日本低倍率, 🇺🇸 美国低倍率, 🇨🇳 台湾低倍率, 🇸🇬 狮城低倍率, 🚀 手动切换, 🎯 DIRECT]}
 
 # 代理组锚点
 UrlTest: &UrlTest {type: url-test, interval: 300, tolerance: 20, url: 'http://cp.cloudflare.com', disable-udp: false, timeout: 2000, max-failed-times: 3, include-all-providers: true}
@@ -164,7 +168,7 @@ LoadBalance: &LoadBalance {type: load-balance, interval: 300, lazy: true, url: '
 
 # 策略组
 proxy-groups:
-  - {name: 🚀 节点选择, type: select, proxies: [♻️ 自动选择, 🇭🇰 香港节点, 🇨🇳 台湾节点, 🇸🇬 狮城节点, 🇯🇵 日本节点, 🇺🇸 美国节点, 🇰🇷 韩国节点, 🇭🇰 香港低倍率, 🇯🇵 日本低倍率, 🇺🇸 美国低倍率, 🇨🇳 台湾低倍率, 🇸🇬 狮城低倍率, 🇭🇰 香港高倍率, 🇯🇵 日本高倍率, 🇺🇸 美国高倍率, 🇨🇳 台湾高倍率, 🇸🇬 狮城高倍率, 🚀 手动切换, DIRECT]}
+  - {name: 🚀 节点选择, type: select, proxies: [♻️ 自动选择, 🇭🇰 香港节点, 🇨🇳 台湾节点, 🇸🇬 狮城节点, 🇯🇵 日本节点, 🇺🇸 美国节点, 🇰🇷 韩国节点, 🇭🇰 香港低倍率, 🇯🇵 日本低倍率, 🇺🇸 美国低倍率, 🇨🇳 台湾低倍率, 🇸🇬 狮城低倍率, 🇭🇰 香港高倍率, 🇯🇵 日本高倍率, 🇺🇸 美国高倍率, 🇨🇳 台湾高倍率, 🇸🇬 狮城高倍率, 🚀 手动切换, 🎯 DIRECT]}
   - {name: 🚀 手动切换, type: select, include-all: true}
   - {name: ♻️ 自动选择, <<: *UrlTest}
   - {name: 📺 Emby影院, <<: *pr2}
@@ -172,8 +176,8 @@ proxy-groups:
   - {name: 💬 Ai, <<: *pr2}
   - {name: 📹 油管视频, <<: *pr2}
   - {name: 🎥 奈飞视频, <<: *pr2}
-  - {name: 📺 巴哈姆特, type: select, proxies: [🇨🇳 台湾节点, 🇨🇳 台湾低倍率, 🚀 节点选择, 🚀 手动切换, DIRECT]}
-  - {name: 📺 哔哩哔哩, type: select, proxies: [DIRECT, 🇨🇳 台湾节点, 🇭🇰 香港节点, 🇨🇳 台湾低倍率, 🇭🇰 香港低倍率]}
+  - {name: 📺 巴哈姆特, type: select, proxies: [🇨🇳 台湾节点, 🇨🇳 台湾低倍率, 🚀 节点选择, 🚀 手动切换, 🎯 DIRECT]}
+  - {name: 📺 哔哩哔哩, type: select, proxies: [🎯 DIRECT, 🇨🇳 台湾节点, 🇭🇰 香港节点, 🇨🇳 台湾低倍率, 🇭🇰 香港低倍率]}
   - {name: 🌍 国外媒体, <<: *pr2}
   - {name: 📢 谷歌FCM, <<: *pr1}
   - {name: Ⓜ️ 微软Bing, <<: *pr1}
@@ -203,19 +207,19 @@ proxy-groups:
   - {name: 🇸🇬 狮城高倍率, <<: *UrlTest, filter: "(?i)(新加坡|坡|狮城|SG|Singapore)(?=.*2\\.00x)"}
   - {name: 🇰🇷 韩国高倍率, <<: *UrlTest, filter: "(?i)(KR|Korea|KOR|首尔|韩|韓)(?=.*2\\.00x)"}
 rules: 
-  - RULE-SET,Lan_domain,DIRECT
-  - RULE-SET,Lan_ip,DIRECT
-  - RULE-SET,Custom_Direct,DIRECT
+  - RULE-SET,Lan_domain,🎯 DIRECT
+  - RULE-SET,Lan_ip,🎯 DIRECT
+  - RULE-SET,Custom_Direct,🎯 DIRECT
   - RULE-SET,Custom_Proxy,🚀 节点选择
-  - GEOSITE,cn,DIRECT
-  - GEOIP,cn,DIRECT
-  - RULE-SET,Direct_domain,DIRECT
-  - GEOSITE,google-cn,DIRECT
+  - GEOSITE,cn,🎯 DIRECT
+  - GEOIP,cn,🎯 DIRECT
+  - RULE-SET,Direct_domain,🎯 DIRECT
+  - GEOSITE,google-cn,🎯 DIRECT
   - RULE-SET,GoogleCNProxyIP,🚀 节点选择
-  - GEOSITE,category-games@cn,DIRECT
-  - RULE-SET,Steam_CDN,DIRECT
-  - RULE-SET,Game_Download_CDN,DIRECT
-  - GEOSITE,category-public-tracker,DIRECT
+  - GEOSITE,category-games@cn,🎯 DIRECT
+  - RULE-SET,Steam_CDN,🎯 DIRECT
+  - RULE-SET,Game_Download_CDN,🎯 DIRECT
+  - GEOSITE,category-public-tracker,🎯 DIRECT
   - RULE-SET,Telegram_domain,📲 电报消息
   - RULE-SET,Telegram_ip,📲 电报消息,no-resolve
   - RULE-SET,AI_domain,💬 Ai
@@ -226,8 +230,8 @@ rules:
   - RULE-SET,Bing_domain,Ⓜ️ 微软Bing
   - RULE-SET,OneDrive_domain,Ⓜ️ 微软云盘
   - RULE-SET,Microsoft_domain,Ⓜ️ 微软服务
-  - RULE-SET,XiaoMi_domain,DIRECT
-  - RULE-SET,XiaoMi_ip,DIRECT
+  - RULE-SET,XiaoMi_domain,🎯 DIRECT
+  - RULE-SET,XiaoMi_ip,🎯 DIRECT
   - RULE-SET,GoogleFCM_domain,📢 谷歌FCM
   - RULE-SET,GoogleFCM_ip,📢 谷歌FCM,no-resolve
   - RULE-SET,Epic_domain,🎮 游戏平台
@@ -243,13 +247,13 @@ rules:
   - RULE-SET,Biliintl_domain,📺 哔哩哔哩
   - RULE-SET,Bilibili_domain,📺 哔哩哔哩
   - RULE-SET,Bilibili_ip,📺 哔哩哔哩,no-resolve
-  - RULE-SET,ChinaMedia_domain,DIRECT
-  - RULE-SET,ChinaMedia_ip,DIRECT
-  - RULE-SET,IPTVMainland_domain,DIRECT
+  - RULE-SET,ChinaMedia_domain,🎯 DIRECT
+  - RULE-SET,ChinaMedia_ip,🎯 DIRECT
+  - RULE-SET,IPTVMainland_domain,🎯 DIRECT
   - RULE-SET,GlobalMedia_domain,🌍 国外媒体
   - RULE-SET,GlobalMedia_ip,🌍 国外媒体,no-resolve
   - GEOSITE,gfw,🚀 节点选择
-  - RULE-SET,Download_domain,DIRECT
+  - RULE-SET,Download_domain,🎯 DIRECT
   - MATCH,🐟 漏网之鱼
 rule-anchor:
   ip: &ip {type: http, interval: 86400, behavior: ipcidr, format: mrs}

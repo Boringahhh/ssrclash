@@ -200,11 +200,9 @@ proxy-groups:
   - {name: 🇰🇷 韩国节点, <<: *UrlTest, filter: *KR}
 rules: 
   - RULE-SET,Lan_domain,🎯 DIRECT
-  - RULE-SET,Lan_ip,🎯 DIRECT
+  - RULE-SET,Lan_ip,🎯 DIRECT,no-resolve
   - RULE-SET,Custom_Direct,🎯 DIRECT
   - RULE-SET,Custom_Proxy,🚀 节点选择
-  - GEOSITE,cn,🎯 DIRECT
-  - GEOIP,cn,🎯 DIRECT
   - RULE-SET,Direct_domain,🎯 DIRECT
   - GEOSITE,google-cn,🎯 DIRECT
   - RULE-SET,GoogleCNProxyIP,🚀 节点选择
@@ -239,12 +237,14 @@ rules:
   - RULE-SET,Bilibili_domain,📺 哔哩哔哩
   - RULE-SET,Bilibili_ip,📺 哔哩哔哩,no-resolve
   - RULE-SET,ChinaMedia_domain,🎯 DIRECT
-  - RULE-SET,ChinaMedia_ip,🎯 DIRECT
+  - RULE-SET,ChinaMedia_ip,🎯 DIRECT,no-resolve
   - RULE-SET,IPTVMainland_domain,🎯 DIRECT
   - RULE-SET,GlobalMedia_domain,🌍 国外媒体
   - RULE-SET,GlobalMedia_ip,🌍 国外媒体,no-resolve
   - GEOSITE,gfw,🚀 节点选择
   - RULE-SET,Download_domain,🎯 DIRECT
+  - GEOSITE,cn,🎯 DIRECT
+  - GEOIP,cn,🎯 DIRECT,no-resolve
   - MATCH,🐟 漏网之鱼
 rule-anchor:
   ip: &ip {type: http, interval: 86400, behavior: ipcidr, format: mrs}

@@ -202,9 +202,6 @@ rules:
   - RULE-SET,Private_domain,🎯 DIRECT
   - RULE-SET,Steam_CDN,🎯 DIRECT
   - RULE-SET,Game_Download_CDN,🎯 DIRECT
-  - RULE-SET,XiaoMi_domain,🎯 DIRECT
-  - RULE-SET,ChinaMedia_domain,🎯 DIRECT
-  - RULE-SET,IPTVMainland_domain,🎯 DIRECT
   - RULE-SET,Download_domain,🎯 DIRECT
 
   - RULE-SET,Telegram_domain,📲 电报消息
@@ -214,6 +211,7 @@ rules:
   - RULE-SET,Bing_domain,Ⓜ️ 微软Bing
   - RULE-SET,OneDrive_domain,Ⓜ️ 微软云盘
   - RULE-SET,Microsoft_domain,Ⓜ️ 微软服务
+  - RULE-SET,XiaoMi_domain,🎯 DIRECT
   - RULE-SET,GoogleFCM_domain,📢 谷歌FCM
   - RULE-SET,Github-domain,🚀 节点选择
   - RULE-SET,Epic_domain,🎮 游戏平台
@@ -225,18 +223,16 @@ rules:
   - RULE-SET,Bahamut_domain,📺 巴哈姆特
   - RULE-SET,Biliintl_domain,📺 哔哩哔哩
   - RULE-SET,Bilibili_domain,📺 哔哩哔哩
+  - RULE-SET,ChinaMedia_domain,🎯 DIRECT
+  - RULE-SET,IPTVMainland_domain,🎯 DIRECT
   - RULE-SET,GlobalMedia_domain,🌍 国外媒体
   - RULE-SET,Proxy_domain,🚀 节点选择
 
-  - RULE-SET,XiaoMi_ip,🎯 DIRECT
-  - RULE-SET,ChinaMedia_ip,🎯 DIRECT
   - RULE-SET,Telegram_ip,📲 电报消息,no-resolve
-  - RULE-SET,YouTube_ip,📹 油管视频,no-resolve
   - RULE-SET,Apple_ip,🍎 苹果服务,no-resolve
-  - RULE-SET,GoogleFCM_ip,📢 谷歌FCM,no-resolve
-  - RULE-SET,Nintendo_ip,🎮 游戏平台,no-resolve
   - RULE-SET,Netflix_ip,🎥 奈飞视频,no-resolve
   - RULE-SET,Bilibili_ip,📺 哔哩哔哩,no-resolve
+  - RULE-SET,ChinaMedia_ip,🎯 DIRECT
   - RULE-SET,GlobalMedia_ip,🌍 国外媒体,no-resolve
 
   - RULE-SET,cn_domain,🎯 DIRECT
@@ -258,39 +254,34 @@ rule-providers:
   Steam_CDN: {!!merge <<: *class, path: ./ruleset/Steam_CDN.list, url: "https://raw.githubusercontent.com/Aethersailor/Custom_OpenClash_Rules/main/rule/Steam_CDN.list"}
   Game_Download_CDN: {!!merge <<: *class, path: ./ruleset/Game_Download_CDN.list, url: "https://raw.githubusercontent.com/Aethersailor/Custom_OpenClash_Rules/main/rule/Game_Download_CDN.list"}
 
-  Telegram_domain: {!!merge <<: *domain, path: ./ruleset/Telegram_domain.mrs, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/Telegram/Telegram_OCD_Domain.mrs"}
-  Telegram_ip: {!!merge <<: *ip, path: ./ruleset/Telegram_ip.mrs, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/Telegram/Telegram_OCD_IP.mrs"}
+  Telegram_domain: {!!merge <<: *domain, path: ./ruleset/Telegram_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/telegram.mrs"}
+  Telegram_ip: {!!merge <<: *ip, path: ./ruleset/Telegram_ip.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/telegram.mrs"}
 
-  YouTube_domain: {!!merge <<: *domain, path: ./ruleset/YouTube_domain.mrs, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/YouTube/YouTube_OCD_Domain.mrs"}
-  YouTube_ip: {!!merge <<: *ip, path: ./ruleset/YouTube_ip.mrs, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/YouTube/YouTube_OCD_IP.mrs"}
+  YouTube_domain: {!!merge <<: *domain, path: ./ruleset/YouTube_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/youtube.mrs"}
 
   Github-domain: {!!merge <<: *domain, path: ./ruleset/Github-domain.mrs, url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/github.mrs}
 
-  Apple_domain: {!!merge <<: *domain, path: ./ruleset/Apple_domain.mrs, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/Apple/Apple_OCD_Domain.mrs"}
-  Apple_ip: {!!merge <<: *ip, path: ./ruleset/Apple_ip.mrs, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/Apple/Apple_OCD_IP.mrs"}
+  Apple_domain: {!!merge <<: *domain, path: ./ruleset/Apple_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/apple.mrs"}
+  Apple_ip: {!!merge <<: *ip, path: ./ruleset/Apple_ip.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo-lite/geoip/apple.mrs"}
 
-  Bing_domain: {!!merge <<: *domain, path: ./ruleset/Bing_domain.mrs, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/Bing/Bing_OCD_Domain.mrs"}
-  OneDrive_domain: {!!merge <<: *domain, path: ./ruleset/OneDrive_domain.mrs, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/OneDrive/OneDrive_OCD_Domain.mrs"}
-  Microsoft_domain: {!!merge <<: *domain, path: ./ruleset/Microsoft_domain.mrs, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/Microsoft/Microsoft_OCD_Domain.mrs"}
+  Bing_domain: {!!merge <<: *domain, path: ./ruleset/Bing_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/bing.mrs"}
+  OneDrive_domain: {!!merge <<: *domain, path: ./ruleset/OneDrive_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/onedrive.mrs"}
+  Microsoft_domain: {!!merge <<: *domain, path: ./ruleset/Microsoft_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/microsoft.mrs"}
 
-  XiaoMi_domain: {!!merge <<: *domain, path: ./ruleset/XiaoMi_domain.mrs, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/XiaoMi/XiaoMi_OCD_Domain.mrs"}
-  XiaoMi_ip: {!!merge <<: *ip, path: ./ruleset/XiaoMi_ip.mrs, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/XiaoMi/XiaoMi_OCD_IP.mrs"}
+  XiaoMi_domain: {!!merge <<: *domain, path: ./ruleset/XiaoMi_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/xiaomi.mrs"}
 
-  GoogleFCM_domain: {!!merge <<: *domain, path: ./ruleset/GoogleFCM_domain.mrs, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/GoogleFCM/GoogleFCM_OCD_Domain.mrs"}
-  GoogleFCM_ip: {!!merge <<: *ip, path: ./ruleset/GoogleFCM_ip.mrs, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/GoogleFCM/GoogleFCM_OCD_IP.mrs"}
+  GoogleFCM_domain: {!!merge <<: *domain, path: ./ruleset/GoogleFCM_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/googlefcm.mrs"}
 
-  Epic_domain: {!!merge <<: *domain, path: ./ruleset/Epic_domain.mrs, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/Epic/Epic_OCD_Domain.mrs"}
-  Origin_domain: {!!merge <<: *domain, path: ./ruleset/Origin_domain.mrs, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/Origin/Origin_OCD_Domain.mrs"}
-  Sony_domain: {!!merge <<: *domain, path: ./ruleset/Sony_domain.mrs, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/Sony/Sony_OCD_Domain.mrs"}
-  Steam_domain: {!!merge <<: *domain, path: ./ruleset/Steam_domain.mrs, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/Steam/Steam_OCD_Domain.mrs"}
+  Epic_domain: {!!merge <<: *domain, path: ./ruleset/Epic_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/epicgames.mrs"}
+  Origin_domain: {!!merge <<: *domain, path: ./ruleset/Origin_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/origin.mrs"}
+  Sony_domain: {!!merge <<: *domain, path: ./ruleset/Sony_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/sony.mrs"}
+  Steam_domain: {!!merge <<: *domain, path: ./ruleset/Steam_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/steam.mrs"}
+  Nintendo_domain: {!!merge <<: *domain, path: ./ruleset/Nintendo_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/nintendo.mrs"}
 
-  Nintendo_domain: {!!merge <<: *domain, path: ./ruleset/Nintendo_domain.mrs, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/Nintendo/Nintendo_OCD_Domain.mrs"}
-  Nintendo_ip: {!!merge <<: *ip, path: ./ruleset/Nintendo_ip.mrs, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/Nintendo/Nintendo_OCD_IP.mrs"}
+  Netflix_domain: {!!merge <<: *domain, path: ./ruleset/Netflix_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/netflix.mrs"}
+  Netflix_ip: {!!merge <<: *ip, path: ./ruleset/Netflix_ip.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/netflix.mrs"}
 
-  Netflix_domain: {!!merge <<: *domain, path: ./ruleset/Netflix_domain.mrs, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/Netflix/Netflix_OCD_Domain.mrs"}
-  Netflix_ip: {!!merge <<: *ip, path: ./ruleset/Netflix_ip.mrs, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/Netflix/Netflix_OCD_IP.mrs"}
-
-  Bahamut_domain: {!!merge <<: *domain, path: ./ruleset/Bahamut_domain.mrs, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/Bahamut/Bahamut_OCD_Domain.mrs"}
+  Bahamut_domain: {!!merge <<: *domain, path: ./ruleset/Bahamut_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/bahamut.mrs"}
 
   Biliintl_domain: {!!merge <<: *domain, path: ./ruleset/Biliintl_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/biliintl.mrs"}
 

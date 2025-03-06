@@ -121,12 +121,12 @@ dns:
 Select: &Select {type: select, proxies: [🚀 节点选择,🇭🇰 香港,🇯🇵 日本,🇺🇸 美国,🇨🇳 台湾,🇸🇬 狮城,🇰🇷 韩国,🚀 手动选择,♻️ 自动选择,直连]}
 UrlTest: &UrlTest {type: url-test, interval: 300, tolerance: 20, lazy: true, url: 'http://cp.cloudflare.com', disable-udp: false, timeout: 2000, max-failed-times: 3, include-all-providers: true}
 
-HK: &HK '(?i)(港|HK|hk|Hong Kong|HongKong|hongkong)'
-JP: &JP '(?i)(日本|川日|东京|大阪|泉日|埼玉|沪日|深日|JP|Japan)'
-TW: &TW '(?i)(台|新北|彰化|TW|Taiwan)'
-US: &US '(?i)(美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|US|United States)'
-SG: &SG '(?i)(新加坡|坡|狮城|SG|Singapore)'
-KR: &KR '(?i)(KR|Korea|KOR|首尔|韩|韓)'
+HK: &HK '(?=.*(🇭🇰|港|\bHK\b|\bHKG\b|(?i)Hong)).*$'
+JP: &JP '(?=.*(🇯🇵|日本|\bJP\b|(?i)Japan)).*$'
+TW: &TW '(?=.*(🇨🇳|台|\bTW\b|(?i)Taiwan)).*$'
+US: &US '(?=.*(🇺🇸|美|\bUS(A)?\b|(?i)United\sStates)).*$'
+SG: &SG '(?=.*(🇸🇬|新加坡|\bSG\b|(?i)Singapore)).*$'
+KR: &KR '(?=.*(🇰🇷|韩国|\bKR\b|(?i)Korea)).*$'
 
 proxy-groups:
 

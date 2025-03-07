@@ -216,13 +216,13 @@ rules:
   - RULE-SET,Telegram_domain,📲 电报消息
   - RULE-SET,AI_domain,💬 Ai
   - RULE-SET,YouTube_domain,📹 油管视频
+  - RULE-SET,Github-domain,🚀 节点选择
   - RULE-SET,Apple_domain,🍎 苹果服务
   - RULE-SET,Bing_domain,Ⓜ️ 微软Bing
   - RULE-SET,OneDrive_domain,Ⓜ️ 微软云盘
   - RULE-SET,Microsoft_domain,Ⓜ️ 微软服务
   - RULE-SET,XiaoMi_domain,🎯 DIRECT
   - RULE-SET,GoogleFCM_domain,📢 谷歌FCM
-  - RULE-SET,Github-domain,🚀 节点选择
   - RULE-SET,Epic_domain,🎮 游戏平台
   - RULE-SET,Origin_domain,🎮 游戏平台
   - RULE-SET,Sony_domain,🎮 游戏平台

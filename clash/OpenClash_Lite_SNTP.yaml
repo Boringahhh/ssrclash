@@ -1,0 +1,346 @@
+# Openclash使用
+# 守候自用
+# 机场订阅，订阅1,订阅2 可以自定名字
+
+proxy-providers:
+  订阅1:
+    type: http
+    interval: 86400
+    path: ./proxy_provider/Providers1.yaml
+    health-check:
+      enable: true
+      url: http://cp.cloudflare.com
+      interval: 300
+    proxy: 🎯 Direct
+    url: "订阅链接1"
+    override:
+      additional-prefix: "[机场名称1]"
+      skip-cert-verify: true  # 绕过证书验证
+      udp: true # 开启udp
+  订阅2:
+    type: http
+    interval: 86400
+    path: ./proxy_provider/Providers2.yaml
+    health-check:
+      enable: true
+      url: http://cp.cloudflare.com
+      interval: 300
+    proxy: 🎯 Direct
+    url: "订阅链接2"
+    override:
+      additional-prefix: "[机场名称2]"
+      skip-cert-verify: true  # 绕过证书验证
+      udp: true # 开启udp
+      
+# 用于下载订阅时指定UA
+global-ua: clash.meta
+    
+# 全局配置
+port: 7890
+socks-port: 7891
+redir-port: 7892
+mixed-port: 7893
+tproxy-port: 7894
+ipv6: false
+allow-lan: true      # 局域网连接：允许其他设备经过本机代理
+unified-delay: true   # 统一延迟：统一显示节点延迟
+tcp-concurrent: true    # TCP并发：允许并发连接TCP,提高并发性能
+# interface-name: eth0  （路由器下根据情况指定出站接口）
+authentication:
+#  - name:passwd
+
+# 匹配进程 always/strict/off
+find-process-mode: strict
+global-client-fingerprint: chrome
+keep-alive-idle: 600
+keep-alive-interval: 30
+
+# 策略组选择和fakeip缓存
+profile:
+  store-selected: true
+  store-fake-ip: true
+  
+# 流量嗅探
+sniffer:
+  enable: true
+  sniff:
+    HTTP:
+      ports: [80, 8080-8880]
+      override-destination: true
+    TLS:
+      ports: [443, 8443]
+    QUIC:
+      ports: [443, 8443]
+  force-domain:
+    - +.v2ex.com
+  skip-domain:
+    - "Mijia Cloud"
+    - "dlg.io.mi.com"
+    - "+.push.apple.com"
+    - "+.apple.com"
+    - '+.wechat.com'
+    - '+.qpic.cn'
+    - '+.qq.com'
+    - '+.wechatapp.com'
+    
+# 代理模式
+tun:
+  enable: true
+  stack: system
+  dns-hijack:
+    - "any:53"
+    - "tcp://any:53"
+  auto-route: true
+  auto-redirect: true
+  auto-detect-interface: true
+  
+# DNS模块
+dns:
+  enable: true
+  listen: 0.0.0.0:1053
+  ipv6: false
+  prefer-h3: true # 是否开启 DoH 支持 HTTP/3，将并发尝试
+  respect-rules: true
+  # 模式切换 redir-host / fake-ip
+  enhanced-mode: fake-ip
+  fake-ip-range: 28.0.0.1/8
+  # 模式切换 whitelist/blacklist 
+  # 黑名单模式表示如果匹配成功则不返回 Fake-IP, 白名单模式时只有匹配成功才返回 Fake-IP
+  fake-ip-filter-mode: blacklist
+  fake-ip-filter:
+    - +.+m2m
+    - +.$injections.adguard.org
+    - +.$local.adguard.org
+    - +.+bogon
+    - +.+lan
+    - +.+localdomain
+    - +.home.arpa
+    - +.10.in-addr.arpa
+    - +.16.172.in-addr.arpa
+    - +.17.172.in-addr.arpa
+    - +.18.172.in-addr.arpa
+    - +.19.172.in-addr.arpa
+    - +.20.172.in-addr.arpa
+    - +.21.172.in-addr.arpa
+    - +.22.172.in-addr.arpa
+    - +.23.172.in-addr.arpa
+    - +.24.172.in-addr.arpa
+    - +.25.172.in-addr.arpa
+    - +.26.172.in-addr.arpa
+    - +.27.172.in-addr.arpa
+    - +.28.172.in-addr.arpa
+    - +.29.172.in-addr.arpa
+    - +.30.172.in-addr.arpa
+    - +.31.172.in-addr.arpa
+    - +.168.192.in-addr.arpa
+    - +.254.169.in-addr.arpa
+    - dns.msftncsi.com
+    - "*.srv.nintendo.net"
+    - "*.stun.playstation.net"
+    - xbox.*.microsoft.com
+    - "*.xboxlive.com"
+    - "*.turn.twilio.com"
+    - "*.stun.twilio.com"
+    - stun.syncthing.net
+    - stun.*
+  default-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+  proxy-server-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+  nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+  nameserver-policy:
+    'rule-set:apple_cdn,microsoft_cdn_non_ip,apple_cn_non_ip,domestic_non_ip,WeChat_domain':
+    - "https://223.5.5.5/dns-query"
+    - "https://doh.pub/dns-query"
+    'rule-set:global_non_ip,cdn_domainset,cdn_non_ip':
+    - "https://dns.cloudflare.com/dns-query"
+    - "https://dns.google/dns-query"
+
+hosts:
+  dns.alidns.com:
+    - 223.5.5.5
+    - 223.6.6.6
+    - 2400:3200:baba::1
+    - 2400:3200::1
+  doh.pub:
+    - 120.53.53.53
+    - 1.12.12.12
+  cdn.jsdelivr.net:
+    - cdn.jsdelivr.net.cdn.cloudflare.net
+
+proxies:
+- name: "🎯 Direct"
+  type: direct
+  udp: true
+
+# 策略组锚点
+pr1: &pr1 {type: select, proxies: [🎯 Direct, 🚀 节点选择, 🇭🇰 香港节点, 🇸🇬 新加坡节点, 🇨🇳 台湾节点, 🇯🇵 日本节点, 🇺🇸 美国节点, 🇰🇷 韩国节点, 🇭🇰 香港低倍率, 🇸🇬 新加坡低倍率, 🇨🇳 台湾低倍率, 🇯🇵 日本低倍率, 🇺🇸 美国低倍率, 🇭🇰 香港高倍率, 🇸🇬 新加坡高倍率, 🇨🇳 台湾高倍率, 🇪🇺 欧洲节点, 🇺🇳 其他地区, 🚀 手动切换]}
+pr2: &pr2 {type: select, proxies: [🚀 节点选择, 🇭🇰 香港节点, 🇸🇬 新加坡节点, 🇨🇳 台湾节点, 🇯🇵 日本节点, 🇺🇸 美国节点, 🇰🇷 韩国节点, 🇭🇰 香港低倍率, 🇸🇬 新加坡低倍率, 🇨🇳 台湾低倍率, 🇯🇵 日本低倍率, 🇺🇸 美国低倍率, 🇭🇰 香港高倍率, 🇸🇬 新加坡高倍率, 🇨🇳 台湾高倍率, 🇪🇺 欧洲节点, 🇺🇳 其他地区, 🚀 手动切换, 🎯 Direct]}
+
+# 代理组锚点
+UrlTest: &UrlTest {type: url-test, interval: 300, tolerance: 20, url: 'http://cp.cloudflare.com', disable-udp: false, timeout: 2000, max-failed-times: 3, include-all-providers: true}
+FallBack: &FallBack {type: fallback, interval: 300, lazy: true, url: 'http://cp.cloudflare.com', disable-udp: false, timeout: 2000, max-failed-times: 3, include-all-providers: true}
+LoadBalance: &LoadBalance {type: load-balance, interval: 300, lazy: true, url: 'http://cp.cloudflare.com', disable-udp: false, strategy: consistent-hashing, timeout: 2000, max-failed-times: 3, include-all-providers: true}
+
+# 策略组
+proxy-groups:
+  - {name: 🚀 节点选择, type: select, proxies: [♻️ 自动选择, 🇭🇰 香港节点, 🇸🇬 新加坡节点, 🇨🇳 台湾节点, 🇯🇵 日本节点, 🇺🇸 美国节点, 🇰🇷 韩国节点, 🇭🇰 香港低倍率, 🇸🇬 新加坡低倍率, 🇨🇳 台湾低倍率, 🇯🇵 日本低倍率, 🇺🇸 美国低倍率, 🇭🇰 香港高倍率, 🇸🇬 新加坡高倍率, 🇨🇳 台湾高倍率, 🇪🇺 欧洲节点, 🇺🇳 其他地区, 🚀 手动切换, 🎯 Direct]}
+  - {name: ♻️ 自动选择,type: select, proxies: [🇭🇰 香港节点, 🇸🇬 新加坡节点, 🇨🇳 台湾节点, 🇯🇵 日本节点, 🇺🇸 美国节点, 🇰🇷 韩国节点, 🇭🇰 香港低倍率, 🇸🇬 新加坡低倍率, 🇨🇳 台湾低倍率, 🇯🇵 日本低倍率, 🇺🇸 美国低倍率, 🇭🇰 香港高倍率, 🇸🇬 新加坡高倍率, 🇨🇳 台湾高倍率, 🇪🇺 欧洲节点, 🇺🇳 其他地区]}
+  - {name: 💾 下载&更新,!!merge <<: *pr1}
+  - {name: 💬 Telegram,!!merge <<: *pr2}
+  - {name: 🤖 AIGC, type: select, proxies: [🇺🇸 美国节点, 🇭🇰 香港节点, 🇨🇳 台湾节点, 🇯🇵 日本节点, 🇪🇺 欧洲节点, 🇺🇳 其他地区, 🚀 节点选择, 🚀 手动切换, 🎯 Direct]}
+  - {name: 📹 YouTube,!!merge <<: *pr2}
+  - {name: 🎥 Netflix,!!merge <<: *pr2}
+  - {name: 🎥 Emby,!!merge <<: *pr2}
+  - {name: 🌍 Global Media,!!merge <<: *pr2}
+  - {name: Ⓜ️ Microsoft,!!merge <<: *pr1}
+  - {name: 🍎 Apple,!!merge <<: *pr1}
+  - {name: 🎮 Game,!!merge <<: *pr1}
+  - {name: 🐟 漏网之鱼,!!merge <<: *pr2}
+  - {name: 🚀 手动切换, type: select, include-all: true}
+
+  - {name: 🇭🇰 香港节点,!!merge <<: *UrlTest, filter: "(?=.*(🇭🇰|港|\bHK\b|\bHKG\b|(?i)Hong))(?!.*2\\.00x).*$"}
+  - {name: 🇸🇬 新加坡节点,!!merge <<: *UrlTest, filter: "(?=.*(🇸🇬|新加坡|\bSG\b|(?i)Singapore))(?!.*2\\.00x).*$"}
+  - {name: 🇨🇳 台湾节点,!!merge <<: *UrlTest, filter: "(?=.*(🇨🇳|台|\bTW\b|(?i)Taiwan))(?!.*2\\.00x).*$"}
+  - {name: 🇯🇵 日本节点,!!merge <<: *UrlTest, filter: "(?=.*(🇯🇵|日本|\bJP\b|(?i)Japan))(?!.*2\\.00x).*$"}
+  - {name: 🇺🇸 美国节点,!!merge <<: *UrlTest, filter: "(?=.*(🇺🇸|美|\bUS(A)?\b|(?i)United\\sStates))(?!.*2\\.00x).*$"}
+  - {name: 🇰🇷 韩国节点,!!merge <<: *UrlTest, filter: "(?=.*(🇰🇷|韩国|\bKR\b|(?i)Korea)).*$"}
+  - {name: 🇪🇺 欧洲节点,type: select, include-all: true, filter: "(?=.*(🇩🇪|德国|\bDE\b|(?i)Germany|🇫🇷|法国|\bFR\b|(?i)France|🇮🇹|意大利|\bIT\b|(?i)Italy|🇪🇸|西班牙|\bES\b|(?i)Spain|🇬🇧|英国|\bUK\b|United Kingdom)).*$"}
+  - {name: 🇺🇳 其他地区,type: select, include-all: true, filter: "^((?!(🇭🇰|🇸🇬|🇨🇳|🇯🇵|🇺🇸|DIRECT|🎯 Direct)).)*$"}
+
+  - {name: 🇭🇰 香港低倍率,!!merge <<: *UrlTest, filter: "(?=.*(🇭🇰|港|\bHK\b|\bHKG\b|(?i)Hong))(?=.*0\\.20x).*$"}
+  - {name: 🇸🇬 新加坡低倍率,!!merge <<: *UrlTest, filter: "(?=.*(🇸🇬|新加坡|\bSG\b|(?i)Singapore))(?=.*0\\.20x).*$"}
+  - {name: 🇨🇳 台湾低倍率,!!merge <<: *UrlTest, filter: "(?=.*(🇨🇳|台|\bTW\b|(?i)Taiwan))(?!.*2\\.00x)(?=.*0\\.20x).*$"}
+  - {name: 🇯🇵 日本低倍率,!!merge <<: *UrlTest, filter: "(?=.*(🇯🇵|日本|\bJP\b|(?i)Japan))(?=.*0\\.20x).*$"}
+  - {name: 🇺🇸 美国低倍率,!!merge <<: *UrlTest, filter: "(?=.*(🇺🇸|美|\bUS(A)?\b|(?i)United\\sStates))(?=.*0\\.20x).*$"}
+
+  - {name: 🇭🇰 香港高倍率,!!merge <<: *UrlTest, filter: "(?=.*(🇭🇰|港|\bHK\b|\bHKG\b|(?i)Hong))(?=.*2\\.00x).*$"}
+  - {name: 🇸🇬 新加坡高倍率,!!merge <<: *UrlTest, filter: "(?=.*(🇸🇬|新加坡|\bSG\b|(?i)Singapore))(?=.*2\\.00x).*$"}
+  - {name: 🇨🇳 台湾高倍率,!!merge <<: *UrlTest, filter: "(?=.*(🇨🇳|台|\bTW\b|(?i)Taiwan))(?!.*2\\.00x)(?=.*2\\.00x).*$"}
+
+rules: 
+  # 非 IP 类规则
+  - RULE-SET,reject_non_ip,REJECT
+  - RULE-SET,reject_domainset,REJECT
+  - RULE-SET,reject_non_ip_drop,REJECT-DROP
+  - RULE-SET,reject_non_ip_no_drop,REJECT
+  - RULE-SET,cdn_domainset,🚀 节点选择
+  - RULE-SET,cdn_non_ip,🚀 节点选择
+  - RULE-SET,YouTube_domain,📹 YouTube
+  - RULE-SET,Netflix_domain,🎥 Netflix
+  - RULE-SET,SNTP,🎥 Emby
+  - RULE-SET,stream_non_ip,🌍 Global Media
+  - RULE-SET,ai_non_ip,🤖 AIGC
+  - RULE-SET,telegram_non_ip,💬 Telegram
+  - RULE-SET,Epic_domain,🎮 Game
+  - RULE-SET,Origin_domain,🎮 Game
+  - RULE-SET,Sony_domain,🎮 Game
+  - RULE-SET,SteamCN_domain,🎮 Game
+  - RULE-SET,Steam_domain,🎮 Game
+  - RULE-SET,Nintendo_domain,🎮 Game
+  - RULE-SET,download_domainset,💾 下载&更新
+  - RULE-SET,download_non_ip,💾 下载&更新
+  - RULE-SET,apple_cdn,🎯 Direct
+  - RULE-SET,microsoft_cdn_non_ip,🎯 Direct
+  - RULE-SET,apple_cn_non_ip,🎯 Direct
+  - RULE-SET,apple_services,🍎 Apple
+  - RULE-SET,microsoft_non_ip,Ⓜ️ Microsoft
+  - RULE-SET,global_non_ip,🚀 节点选择
+  - RULE-SET,domestic_non_ip,🎯 Direct
+  - RULE-SET,WeChat_domain,🎯 Direct
+  - RULE-SET,direct_non_ip,🎯 Direct
+  - RULE-SET,lan_non_ip,DIRECT
+
+  # IP 类规则
+  - RULE-SET,reject_ip,REJECT
+  - RULE-SET,telegram_ip,💬 Telegram
+  - RULE-SET,Netflix_ip,🎥 Netflix,no-resolve
+  - RULE-SET,stream_ip,🌍 Global Media
+  - RULE-SET,lan_ip,DIRECT
+  - RULE-SET,domestic_ip,🎯 Direct
+  - RULE-SET,china_ip,🎯 Direct
+  - GEOIP,cn,🎯 Direct
+  - MATCH,🐟 漏网之鱼
+
+rule-anchor:
+  RuleSet_classical: &RuleSet_classical {type: http, behavior: classical, interval: 43200, format: text, proxy: 🚀 节点选择}
+  RuleSet_domain: &RuleSet_domain {type: http, behavior: domain, interval: 43200, format: text, proxy: 🚀 节点选择}
+  RuleSet_ipcidr: &RuleSet_ipcidr {type: http, behavior: ipcidr, interval: 43200, format: text, proxy: 🚀 节点选择}
+  ip: &ip {type: http, interval: 86400, behavior: ipcidr, format: mrs}
+  domain: &domain {type: http, interval: 86400, behavior: domain, format: mrs}
+rule-providers: 
+
+  # 广告拦截 / 隐私保护 / 病毒拦截 / 钓鱼和诈骗域名拦截
+  reject_non_ip_no_drop: {!!merge <<: *RuleSet_classical, path: ./ruleset/reject_non_ip_no_drop.txt, url: https://ruleset.skk.moe/Clash/non_ip/reject-no-drop.txt}
+  reject_non_ip_drop: {!!merge <<: *RuleSet_classical, path: ./ruleset/reject_non_ip_drop.txt, url: https://ruleset.skk.moe/Clash/non_ip/reject-drop.txt}
+  reject_non_ip: {!!merge <<: *RuleSet_classical, path: ./ruleset/reject_non_ip.txt, url: https://ruleset.skk.moe/Clash/non_ip/reject.txt}
+  reject_domainset: {!!merge <<: *RuleSet_domain, path: ./ruleset/reject_domainset.txt, url: https://ruleset.skk.moe/Clash/domainset/reject.txt}
+  reject_ip: {!!merge <<: *RuleSet_classical, path: ./ruleset/reject_ip.txt, url: https://ruleset.skk.moe/Clash/ip/reject.txt}
+
+  # 静态 CDN 域名
+  cdn_domainset: {!!merge <<: *RuleSet_domain, path: ./ruleset/cdn_domainset.txt, url: https://ruleset.skk.moe/Clash/domainset/cdn.txt}
+  cdn_non_ip: {!!merge <<: *RuleSet_domain, path: ./ruleset/cdn_non_ip.txt, url: https://ruleset.skk.moe/Clash/non_ip/cdn.txt}
+
+  # Youtube
+  YouTube_domain: {!!merge <<: *domain, path: ./ruleset/YouTube_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/youtube.mrs"}
+
+  # Netflix
+  Netflix_domain: {!!merge <<: *domain, path: ./ruleset/Netflix_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/netflix.mrs"}
+  Netflix_ip: {!!merge <<: *ip, path: ./ruleset/Netflix_ip.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/netflix.mrs"}
+
+  # Emby
+  SNTP: {!!merge <<: *RuleSet_classical, path: ./ruleset/SNTP.list, url: "https://raw.githubusercontent.com/Boringahhh/ssrclash/new/clash/config/SNTP.list"}
+
+  # 所有流媒体（包括上述所有流媒体）
+  stream_non_ip: {!!merge <<: *RuleSet_classical, path: ./ruleset/stream_non_ip.txt, url: https://ruleset.skk.moe/Clash/non_ip/stream.txt}
+  stream_ip: {!!merge <<: *RuleSet_classical, path: ./ruleset/stream_ip.txt, url: https://ruleset.skk.moe/Clash/ip/stream.txt}
+
+  # Ai
+  ai_non_ip: {!!merge <<: *RuleSet_classical, path: ./ruleset/ai_non_ip.txt, url: https://ruleset.skk.moe/Clash/non_ip/ai.txt}
+
+  # Telegram
+  telegram_non_ip: {!!merge <<: *RuleSet_classical, path: ./ruleset/telegram_non_ip.txt, url: https://ruleset.skk.moe/Clash/non_ip/telegram.txt}
+  telegram_ip: {!!merge <<: *RuleSet_classical, path: ./ruleset/telegram_ip.txt, url: https://ruleset.skk.moe/Clash/ip/telegram.txt}
+
+  # Apple CDN / Apple Service / # Apple CN
+  apple_cdn: {!!merge <<: *RuleSet_domain, path: ./ruleset/apple_cdn.txt, url: https://ruleset.skk.moe/Clash/domainset/apple_cdn.txt}
+  apple_services: {!!merge <<: *RuleSet_classical, path: ./ruleset/apple_services.txt, url: https://ruleset.skk.moe/Clash/non_ip/apple_services.txt}
+  apple_cn_non_ip: {!!merge <<: *RuleSet_classical, path: ./ruleset/apple_cn_non_ip.txt, url: https://ruleset.skk.moe/Clash/non_ip/apple_cn.txt}
+  
+  # Microsoft CDN / Microsoft
+  microsoft_cdn_non_ip: {!!merge <<: *RuleSet_classical, path: ./ruleset/microsoft_cdn_non_ip.txt, url: https://ruleset.skk.moe/Clash/non_ip/microsoft_cdn.txt}
+  microsoft_non_ip: {!!merge <<: *RuleSet_classical, path: ./ruleset/microsoft_non_ip.txt, url: https://ruleset.skk.moe/Clash/non_ip/microsoft.txt}
+
+  # 软件、游戏和驱动的下载和更新域名
+  download_domainset: {!!merge <<: *RuleSet_domain, path: ./ruleset/download_domainset.txt, url: https://ruleset.skk.moe/Clash/domainset/download.txt}
+  download_non_ip: {!!merge <<: *RuleSet_domain, path: ./ruleset/download_non_ip.txt, url: https://ruleset.skk.moe/Clash/non_ip/download.txt}
+
+  # 游戏
+  Epic_domain: {!!merge <<: *domain, path: ./ruleset/Epic_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/epicgames.mrs"}
+  Origin_domain: {!!merge <<: *domain, path: ./ruleset/Origin_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/origin.mrs"}
+  Sony_domain: {!!merge <<: *domain, path: ./ruleset/Sony_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/sony.mrs"}
+  SteamCN_domain: {!!merge <<: *domain, path: ./ruleset/Steam_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/steam@cn.mrs"}
+  Steam_domain: {!!merge <<: *domain, path: ./ruleset/Steam_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/steam.mrs"}
+  Nintendo_domain: {!!merge <<: *domain, path: ./ruleset/Nintendo_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/nintendo.mrs"}
+
+  # WeChat
+  WeChat_domain: {!!merge <<: *domain, path: ./ruleset/WeChat_domain.mrs, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/WeChat/WeChat_OCD_Domain.mrs"}
+
+  # 内网域名和局域网 IP
+  lan_non_ip: {!!merge <<: *RuleSet_classical, path: ./ruleset/lan_non_ip.txt, url: https://ruleset.skk.moe/Clash/non_ip/lan.txt}
+  lan_ip: {!!merge <<: *RuleSet_classical, path: ./ruleset/lan_ip.txt, url: https://ruleset.skk.moe/Clash/ip/lan.txt}
+  
+  domestic_non_ip: {!!merge <<: *RuleSet_classical, path: ./ruleset/domestic_non_ip.txt, url: https://ruleset.skk.moe/Clash/non_ip/domestic.txt}
+  direct_non_ip: {!!merge <<: *RuleSet_classical, path: ./ruleset/direct_non_ip.txt, url: https://ruleset.skk.moe/Clash/non_ip/direct.txt}
+
+  # 常见海外域名
+  global_non_ip: {!!merge <<: *RuleSet_classical, path: ./ruleset/global_non_ip.txt, url: https://ruleset.skk.moe/Clash/non_ip/global.txt}
+
+  # 国内 IP 段
+  domestic_ip: {!!merge <<: *RuleSet_classical, path: ./ruleset/domestic_ip.txt, url: https://ruleset.skk.moe/Clash/ip/domestic.txt}
+  china_ip: {!!merge <<: *RuleSet_ipcidr, path: ./ruleset/china_ip.txt, url: https://ruleset.skk.moe/Clash/ip/china_ip.txt}
+

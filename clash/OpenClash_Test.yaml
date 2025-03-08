@@ -10,7 +10,7 @@ proxy-providers:
       enable: true
       url: http://cp.cloudflare.com
       interval: 300
-    proxy: DIRECT
+    proxy: 🎯 Direct
     url: "订阅链接1"
     override:
       additional-prefix: "[机场名称1]"
@@ -24,7 +24,7 @@ proxy-providers:
       enable: true
       url: http://cp.cloudflare.com
       interval: 300
-    proxy: DIRECT
+    proxy: 🎯 Direct
     url: "订阅链接2"
     override:
       additional-prefix: "[机场名称2]"
@@ -152,13 +152,13 @@ dns:
     - "https://dns.google/dns-query"
 
 proxies:
-- name: "🎯 DIRECT"
+- name: "🎯 Direct"
   type: direct
   udp: true
 
 # 策略组锚点
-pr1: &pr1 {type: select, proxies: [🎯 DIRECT, 🚀 节点选择, 🇺🇸 美国节点, 🇭🇰 香港节点, 🇨🇳 台湾节点, 🇸🇬 狮城节点, 🇯🇵 日本节点, 🇰🇷 韩国节点, 🚀 手动切换]}
-pr2: &pr2 {type: select, proxies: [🚀 节点选择, ♻️ 自动选择, 🇸🇬 狮城节点, 🇭🇰 香港节点, 🇨🇳 台湾节点, 🇯🇵 日本节点, 🇺🇸 美国节点, 🇰🇷 韩国节点, 🚀 手动切换, 🎯 DIRECT]}
+pr1: &pr1 {type: select, proxies: [🎯 Direct, 🚀 节点选择, 🇺🇸 美国节点, 🇭🇰 香港节点, 🇨🇳 台湾节点, 🇸🇬 新加坡节点, 🇯🇵 日本节点, 🇰🇷 韩国节点, 🇪🇺 欧洲节点, 🇺🇳 其他地区, 🚀 手动切换]}
+pr2: &pr2 {type: select, proxies: [🚀 节点选择, ♻️ 自动选择, 🇸🇬 新加坡节点, 🇭🇰 香港节点, 🇨🇳 台湾节点, 🇯🇵 日本节点, 🇺🇸 美国节点, 🇰🇷 韩国节点, 🇪🇺 欧洲节点, 🇺🇳 其他地区, 🚀 手动切换, 🎯 Direct]}
 
 # 代理组锚点
 UrlTest: &UrlTest {type: url-test, interval: 300, tolerance: 20, url: 'http://cp.cloudflare.com', disable-udp: false, timeout: 2000, max-failed-times: 3, include-all-providers: true}
@@ -172,73 +172,76 @@ TW: &TW '(?=.*(🇨🇳|台|\bTW\b|(?i)Taiwan)).*$'
 US: &US '(?=.*(🇺🇸|美|\bUS(A)?\b|(?i)United\sStates)).*$'
 SG: &SG '(?=.*(🇸🇬|新加坡|\bSG\b|(?i)Singapore)).*$'
 KR: &KR '(?=.*(🇰🇷|韩国|\bKR\b|(?i)Korea)).*$'
+OU: &OU '(?=.*(🇩🇪|德国|\bDE\b|(?i)Germany|🇫🇷|法国|\bFR\b|(?i)France|🇮🇹|意大利|\bIT\b|(?i)Italy|🇪🇸|西班牙|\bES\b|(?i)Spain|🇬🇧|英国|\bUK\b|United Kingdom)).*$'
+Others: &Others '^((?!(🇭🇰|🇸🇬|🇨🇳|🇯🇵|🇺🇸|DIRECT|🎯 Direct)).)*$'
 
 # 策略组
 proxy-groups:
-  - {name: 🚀 节点选择, type: select, proxies: [♻️ 自动选择, 🇭🇰 香港节点, 🇨🇳 台湾节点, 🇸🇬 狮城节点, 🇯🇵 日本节点, 🇺🇸 美国节点, 🇰🇷 韩国节点, 🚀 手动切换, 🎯 DIRECT]}
-  - {name: 🚀 手动切换, type: select, include-all: true}
+  - {name: 🚀 节点选择, type: select, proxies: [♻️ 自动选择, 🇭🇰 香港节点, 🇨🇳 台湾节点, 🇸🇬 新加坡节点, 🇯🇵 日本节点, 🇺🇸 美国节点, 🇰🇷 韩国节点, 🇪🇺 欧洲节点, 🇺🇳 其他地区, 🚀 手动切换, 🎯 Direct]}
   - {name: ♻️ 自动选择,!!merge <<: *UrlTest}
-  - {name: 📲 电报消息,!!merge <<: *pr2}
-  - {name: 💬 Ai,!!merge <<: *pr2}
-  - {name: 📹 油管视频,!!merge <<: *pr2}
-  - {name: 🎥 奈飞视频,!!merge <<: *pr2}
-  - {name: 📺 巴哈姆特, type: select, proxies: [🇨🇳 台湾节点, 🚀 节点选择, 🚀 手动切换, 🎯 DIRECT]}
-  - {name: 📺 哔哩哔哩, type: select, proxies: [🎯 DIRECT, 🇨🇳 台湾节点, 🇭🇰 香港节点]}
-  - {name: 🌍 国外媒体,!!merge <<: *pr2}
-  - {name: 📢 谷歌FCM,!!merge <<: *pr1}
-  - {name: Ⓜ️ 微软Bing,!!merge <<: *pr1}
-  - {name: Ⓜ️ 微软云盘,!!merge <<: *pr1}
-  - {name: Ⓜ️ 微软服务,!!merge <<: *pr1}
-  - {name: 🍎 苹果服务,!!merge <<: *pr1}
-  - {name: 🎮 游戏平台,!!merge <<: *pr1}
+  - {name: 💬 Telegram,!!merge <<: *pr2}
+  - {name: 🤖 AIGC, type: select, proxies: [🇺🇸 美国节点, 🇭🇰 香港节点, 🇨🇳 台湾节点, 🇯🇵 日本节点, 🇪🇺 欧洲节点, 🇺🇳 其他地区, 🚀 节点选择, 🚀 手动切换, 🎯 Direct]}
+  - {name: 📹 YouTube,!!merge <<: *pr2}
+  - {name: 🎥 Netflix,!!merge <<: *pr2}
+  - {name: 📺 哔哩哔哩, type: select, proxies: [🎯 Direct, 🇨🇳 台湾节点, 🇭🇰 香港节点]}
+  - {name: 🌍 Global Media,!!merge <<: *pr2}
+  - {name: 📢 Google FCM,!!merge <<: *pr1}
+  - {name: Ⓜ️ Bing,!!merge <<: *pr1}
+  - {name: Ⓜ️ OneDrive,!!merge <<: *pr1}
+  - {name: Ⓜ️ Microsoft,!!merge <<: *pr1}
+  - {name: 🍎 Apple,!!merge <<: *pr1}
+  - {name: 🎮 Game,!!merge <<: *pr1}
   - {name: 🐟 漏网之鱼,!!merge <<: *pr2}
+  - {name: 🚀 手动切换, type: select, include-all: true}
+
   - {name: 🇭🇰 香港节点,!!merge <<: *UrlTest, filter: *HK}
+  - {name: 🇸🇬 新加坡节点,!!merge <<: *UrlTest, filter: *SG}
+  - {name: 🇨🇳 台湾节点,!!merge <<: *UrlTest, filter: *TW}
   - {name: 🇯🇵 日本节点,!!merge <<: *UrlTest, filter: *JP}
   - {name: 🇺🇸 美国节点,!!merge <<: *UrlTest, filter: *US}
-  - {name: 🇨🇳 台湾节点,!!merge <<: *UrlTest, filter: *TW}
-  - {name: 🇸🇬 狮城节点,!!merge <<: *UrlTest, filter: *SG}
   - {name: 🇰🇷 韩国节点,!!merge <<: *UrlTest, filter: *KR}
+  - {name: 🇪🇺 欧洲节点,type: select, include-all: true, filter: *OU}
+  - {name: 🇺🇳 其他地区,type: select, include-all: true, filter: *Others}
 rules: 
-  - RULE-SET,Private_domain,🎯 DIRECT
-  - RULE-SET,Steam_CDN,🎯 DIRECT
-  - RULE-SET,Game_Download_CDN,🎯 DIRECT
-  - RULE-SET,Download_domain,🎯 DIRECT
+  - RULE-SET,Private_domain,🎯 Direct
+  - RULE-SET,Steam_CDN,🎯 Direct
+  - RULE-SET,Game_Download_CDN,🎯 Direct
+  - RULE-SET,Download_domain,🎯 Direct
 
-  - RULE-SET,Telegram_domain,📲 电报消息
-  - RULE-SET,AI_domain,💬 Ai
-  - RULE-SET,YouTube_domain,📹 油管视频
+  - RULE-SET,Telegram_domain,💬 Telegram
+  - RULE-SET,AI_domain,🤖 AIGC
+  - RULE-SET,YouTube_domain,📹 YouTube
   - RULE-SET,Github-domain,🚀 节点选择
-  - RULE-SET,Apple_domain,🍎 苹果服务
-  - RULE-SET,Bing_domain,Ⓜ️ 微软Bing
-  - RULE-SET,OneDrive_domain,Ⓜ️ 微软云盘
-  - RULE-SET,Microsoft_domain,Ⓜ️ 微软服务
-  - RULE-SET,XiaoMi_domain,🎯 DIRECT
-  - RULE-SET,GoogleFCM_domain,📢 谷歌FCM
-  - RULE-SET,Epic_domain,🎮 游戏平台
-  - RULE-SET,Origin_domain,🎮 游戏平台
-  - RULE-SET,Sony_domain,🎮 游戏平台
-  - RULE-SET,Steam_domain,🎮 游戏平台
-  - RULE-SET,Nintendo_domain,🎮 游戏平台
-  - RULE-SET,Netflix_domain,🎥 奈飞视频
-  - RULE-SET,Bahamut_domain,📺 巴哈姆特
+  - RULE-SET,Apple_domain,🍎 Apple
+  - RULE-SET,Bing_domain,Ⓜ️ Bing
+  - RULE-SET,OneDrive_domain,Ⓜ️ OneDrive
+  - RULE-SET,Microsoft_domain,Ⓜ️ Microsoft
+  - RULE-SET,XiaoMi_domain,🎯 Direct
+  - RULE-SET,GoogleFCM_domain,📢 Google FCM
+  - RULE-SET,Epic_domain,🎮 Game
+  - RULE-SET,Origin_domain,🎮 Game
+  - RULE-SET,Sony_domain,🎮 Game
+  - RULE-SET,Steam_domain,🎮 Game
+  - RULE-SET,Nintendo_domain,🎮 Game
+  - RULE-SET,Netflix_domain,🎥 Netflix
   - RULE-SET,Biliintl_domain,📺 哔哩哔哩
   - RULE-SET,Bilibili_domain,📺 哔哩哔哩
-  - RULE-SET,ChinaMedia_domain,🎯 DIRECT
-  - RULE-SET,IPTVMainland_domain,🎯 DIRECT
-  - RULE-SET,GlobalMedia_domain,🌍 国外媒体
+  - RULE-SET,ChinaMedia_domain,🎯 Direct
+  - RULE-SET,IPTVMainland_domain,🎯 Direct
+  - RULE-SET,GlobalMedia_domain,🌍 Global Media
   - RULE-SET,Proxy_domain,🚀 节点选择
 
-  - RULE-SET,Telegram_ip,📲 电报消息,no-resolve
-  - RULE-SET,Apple_ip,🍎 苹果服务,no-resolve
-  - RULE-SET,Netflix_ip,🎥 奈飞视频,no-resolve
+  - RULE-SET,Telegram_ip,💬 Telegram,no-resolve
+  - RULE-SET,Apple_ip,🍎 Apple,no-resolve
+  - RULE-SET,Netflix_ip,🎥 Netflix,no-resolve
   - RULE-SET,Bilibili_ip,📺 哔哩哔哩,no-resolve
-  - RULE-SET,ChinaMedia_ip,🎯 DIRECT
-  - RULE-SET,GlobalMedia_ip,🌍 国外媒体,no-resolve
+  - RULE-SET,ChinaMedia_ip,🎯 Direct
+  - RULE-SET,GlobalMedia_ip,🌍 Global Media,no-resolve
 
-  - RULE-SET,cn_domain,🎯 DIRECT
-  - RULE-SET,cn_ip,🎯 DIRECT
-  - RULE-SET,Private_ip,🎯 DIRECT
-  - GEOIP,cn,🎯 DIRECT
+  - RULE-SET,cn_domain,🎯 Direct
+  - RULE-SET,cn_ip,🎯 Direct
+  - RULE-SET,Private_ip,🎯 Direct
+  - GEOIP,cn,🎯 Direct
   - MATCH,🐟 漏网之鱼
 rule-anchor:
   ip: &ip {type: http, interval: 86400, behavior: ipcidr, format: mrs}
@@ -280,8 +283,6 @@ rule-providers:
 
   Netflix_domain: {!!merge <<: *domain, path: ./ruleset/Netflix_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/netflix.mrs"}
   Netflix_ip: {!!merge <<: *ip, path: ./ruleset/Netflix_ip.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/netflix.mrs"}
-
-  Bahamut_domain: {!!merge <<: *domain, path: ./ruleset/Bahamut_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/bahamut.mrs"}
 
   Biliintl_domain: {!!merge <<: *domain, path: ./ruleset/Biliintl_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/biliintl.mrs"}
 

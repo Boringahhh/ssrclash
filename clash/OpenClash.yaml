@@ -1,0 +1,305 @@
+# Openclash使用，搭配绕过大陆
+# 机场订阅，订阅1,订阅2 可以自定名字
+
+proxy-providers:
+  订阅1:
+    type: http
+    interval: 86400
+    path: ./proxy_provider/Providers1.yaml
+    health-check:
+      enable: true
+      url: http://cp.cloudflare.com
+      interval: 300
+    proxy: 🎯 Direct
+    url: "订阅链接1"
+    override:
+      additional-prefix: "[机场名称1]"
+      skip-cert-verify: true  # 绕过证书验证
+      udp: true # 开启udp
+  订阅2:
+    type: http
+    interval: 86400
+    path: ./proxy_provider/Providers2.yaml
+    health-check:
+      enable: true
+      url: http://cp.cloudflare.com
+      interval: 300
+    proxy: 🎯 Direct
+    url: "订阅链接2"
+    override:
+      additional-prefix: "[机场名称2]"
+      skip-cert-verify: true  # 绕过证书验证
+      udp: true # 开启udp
+      
+# 用于下载订阅时指定UA
+global-ua: clash.meta
+    
+# 全局配置
+port: 7890
+socks-port: 7891
+redir-port: 7892
+mixed-port: 7893
+tproxy-port: 7894
+ipv6: false
+allow-lan: true      # 局域网连接：允许其他设备经过本机代理
+unified-delay: true   # 统一延迟：统一显示节点延迟
+tcp-concurrent: true    # TCP并发：允许并发连接TCP,提高并发性能
+# interface-name: eth0  （路由器下根据情况指定出站接口）
+authentication:
+#  - name:passwd
+  
+geodata-mode: false   # GEO模式：true使用geoip.dat数据库,false使用mmdb数据库
+# GEO 文件加载模式（standard：标准加载器/memconservative：专为内存受限 (小内存) 设备优化的加载器 (默认值)）
+geodata-loader: standard
+geo-auto-update: true  # 是否自动更新 geodata
+geo-update-interval: 48  # 更新间隔，单位：小时
+geox-url:
+  geosite: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geosite.dat"
+  mmdb: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip-lite.metadb"
+  geoip: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip-lite.dat"
+  asn: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/GeoLite2-ASN.mmdb"
+  
+# 控制面板
+# external-controller: 0.0.0.0:9090  # RESTful API 监听地址
+# secret: ""
+# external-ui: ui
+# external-ui-url: "https://github.com/Zephyruso/zashboard/archive/gh-pages.zip"
+# 下载面板地址可更换：https://github.com/MetaCubeX/metacubexd/archive/gh-pages.zip
+
+# 匹配进程 always/strict/off
+find-process-mode: strict
+global-client-fingerprint: chrome
+keep-alive-idle: 600
+keep-alive-interval: 30
+
+# 策略组选择和fakeip缓存
+profile:
+  store-selected: true
+  store-fake-ip: true
+  
+# 流量嗅探
+sniffer:
+  enable: true
+  sniff:
+    HTTP:
+      ports: [80, 8080-8880]
+      override-destination: true
+    TLS:
+      ports: [443, 8443]
+    QUIC:
+      ports: [443, 8443]
+  force-domain:
+    - +.v2ex.com
+  skip-domain:
+    - "Mijia Cloud"
+    - "dlg.io.mi.com"
+    - "+.push.apple.com"
+    - "+.apple.com"
+    - '+.wechat.com'
+    - '+.qpic.cn'
+    - '+.qq.com'
+    - '+.wechatapp.com'
+    
+# 代理模式
+tun:
+  enable: true
+  stack: system
+  dns-hijack:
+    - "any:53"
+    - "tcp://any:53"
+  auto-route: true
+  auto-redirect: true
+  auto-detect-interface: true
+  
+# DNS模块
+dns:
+  enable: true
+  listen: 0.0.0.0:1053
+  ipv6: false
+  prefer-h3: true # 是否开启 DoH 支持 HTTP/3，将并发尝试
+  respect-rules: true
+  # 模式切换 redir-host / fake-ip
+  enhanced-mode: fake-ip
+  fake-ip-range: 28.0.0.1/8
+  # 模式切换 whitelist/blacklist 
+  # 黑名单模式表示如果匹配成功则不返回 Fake-IP, 白名单模式时只有匹配成功才返回 Fake-IP
+  fake-ip-filter-mode: blacklist
+  fake-ip-filter:
+    - "rule-set:Private_domain,Steam_CDN,Game_Download_CDN,XiaoMi_domain,ChinaMedia_domain,IPTVMainland_domain,Download_domain,cn_domain"
+    - "+.services.googleapis.cn"
+    - "+.xn--ngstr-lra8j.com"
+    - "time.*.com"
+    - "+.pool.ntp.org"
+    - "+.ntp.tencent.com"
+    - "+.ntp1.aliyun.com"
+    - "+.ntp.ntsc.ac.cn"
+    - "+.cn.ntp.org.cn"
+  default-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+  proxy-server-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+  nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+  nameserver-policy:
+    'rule-set:Private_domain,Steam_CDN,Game_Download_CDN,XiaoMi_domain,ChinaMedia_domain,IPTVMainland_domain,Download_domain,cn_domain':
+    - "https://223.5.5.5/dns-query"
+    - "https://doh.pub/dns-query"
+    'rule-set:Proxy_domain':
+    - "https://dns.cloudflare.com/dns-query"
+    - "https://dns.google/dns-query"
+
+proxies:
+- name: "🎯 Direct"
+  type: direct
+  udp: true
+
+# 策略组锚点
+pr1: &pr1 {type: select, proxies: [🎯 Direct, 🚀 节点选择, 🇺🇸 美国节点, 🇭🇰 香港节点, 🇨🇳 台湾节点, 🇸🇬 新加坡节点, 🇯🇵 日本节点, 🇰🇷 韩国节点, 🇪🇺 欧洲节点, 🇺🇳 其他地区, 🚀 手动切换]}
+pr2: &pr2 {type: select, proxies: [🚀 节点选择, ♻️ 自动选择, 🇸🇬 新加坡节点, 🇭🇰 香港节点, 🇨🇳 台湾节点, 🇯🇵 日本节点, 🇺🇸 美国节点, 🇰🇷 韩国节点, 🇪🇺 欧洲节点, 🇺🇳 其他地区, 🚀 手动切换, 🎯 Direct]}
+
+# 代理组锚点
+UrlTest: &UrlTest {type: url-test, interval: 300, tolerance: 20, url: 'http://cp.cloudflare.com', disable-udp: false, timeout: 2000, max-failed-times: 3, include-all-providers: true}
+FallBack: &FallBack {type: fallback, interval: 300, lazy: true, url: 'http://cp.cloudflare.com', disable-udp: false, timeout: 2000, max-failed-times: 3, include-all-providers: true}
+LoadBalance: &LoadBalance {type: load-balance, interval: 300, lazy: true, url: 'http://cp.cloudflare.com', disable-udp: false, strategy: consistent-hashing, timeout: 2000, max-failed-times: 3, include-all-providers: true}
+
+# 节点筛选锚点
+HK: &HK '(?=.*(🇭🇰|港|\bHK\b|\bHKG\b|(?i)Hong)).*$'
+JP: &JP '(?=.*(🇯🇵|日本|\bJP\b|(?i)Japan)).*$'
+TW: &TW '(?=.*(🇨🇳|台|\bTW\b|(?i)Taiwan)).*$'
+US: &US '(?=.*(🇺🇸|美|\bUS(A)?\b|(?i)United\sStates)).*$'
+SG: &SG '(?=.*(🇸🇬|新加坡|\bSG\b|(?i)Singapore)).*$'
+KR: &KR '(?=.*(🇰🇷|韩国|\bKR\b|(?i)Korea)).*$'
+OU: &OU '(?=.*(🇩🇪|德国|\bDE\b|(?i)Germany|🇫🇷|法国|\bFR\b|(?i)France|🇮🇹|意大利|\bIT\b|(?i)Italy|🇪🇸|西班牙|\bES\b|(?i)Spain|🇬🇧|英国|\bUK\b|United Kingdom)).*$'
+Others: &Others '^((?!(🇭🇰|🇸🇬|🇨🇳|🇯🇵|🇺🇸|DIRECT|🎯 Direct)).)*$'
+
+# 策略组
+proxy-groups:
+  - {name: 🚀 节点选择, type: select, proxies: [♻️ 自动选择, 🇭🇰 香港节点, 🇨🇳 台湾节点, 🇸🇬 新加坡节点, 🇯🇵 日本节点, 🇺🇸 美国节点, 🇰🇷 韩国节点, 🇪🇺 欧洲节点, 🇺🇳 其他地区, 🚀 手动切换, 🎯 Direct]}
+  - {name: ♻️ 自动选择,!!merge <<: *UrlTest}
+  - {name: 💬 Telegram,!!merge <<: *pr2}
+  - {name: 🤖 AIGC, type: select, proxies: [🇺🇸 美国节点, 🇭🇰 香港节点, 🇨🇳 台湾节点, 🇯🇵 日本节点, 🇪🇺 欧洲节点, 🇺🇳 其他地区, 🚀 节点选择, 🚀 手动切换, 🎯 Direct]}
+  - {name: 📹 YouTube,!!merge <<: *pr2}
+  - {name: 🎥 Netflix,!!merge <<: *pr2}
+  - {name: 📺 哔哩哔哩, type: select, proxies: [🎯 Direct, 🇨🇳 台湾节点, 🇭🇰 香港节点]}
+  - {name: 🌍 Global Media,!!merge <<: *pr2}
+  - {name: 📢 Google FCM,!!merge <<: *pr1}
+  - {name: Ⓜ️ Bing,!!merge <<: *pr1}
+  - {name: Ⓜ️ OneDrive,!!merge <<: *pr1}
+  - {name: Ⓜ️ Microsoft,!!merge <<: *pr1}
+  - {name: 🍎 Apple,!!merge <<: *pr1}
+  - {name: 🎮 Game,!!merge <<: *pr1}
+  - {name: 🐟 漏网之鱼,!!merge <<: *pr2}
+  - {name: 🚀 手动切换, type: select, include-all: true}
+
+  - {name: 🇭🇰 香港节点,!!merge <<: *UrlTest, filter: *HK}
+  - {name: 🇸🇬 新加坡节点,!!merge <<: *UrlTest, filter: *SG}
+  - {name: 🇨🇳 台湾节点,!!merge <<: *UrlTest, filter: *TW}
+  - {name: 🇯🇵 日本节点,!!merge <<: *UrlTest, filter: *JP}
+  - {name: 🇺🇸 美国节点,!!merge <<: *UrlTest, filter: *US}
+  - {name: 🇰🇷 韩国节点,!!merge <<: *UrlTest, filter: *KR}
+  - {name: 🇪🇺 欧洲节点,type: select, include-all: true, filter: *OU}
+  - {name: 🇺🇳 其他地区,type: select, include-all: true, filter: *Others}
+rules: 
+  - RULE-SET,Private_domain,🎯 Direct
+  - RULE-SET,Steam_CDN,🎯 Direct
+  - RULE-SET,Game_Download_CDN,🎯 Direct
+  - RULE-SET,Download_domain,🎯 Direct
+
+  - RULE-SET,Telegram_domain,💬 Telegram
+  - RULE-SET,AI_domain,🤖 AIGC
+  - RULE-SET,YouTube_domain,📹 YouTube
+  - RULE-SET,Github-domain,🚀 节点选择
+  - RULE-SET,Apple_domain,🍎 Apple
+  - RULE-SET,Bing_domain,Ⓜ️ Bing
+  - RULE-SET,OneDrive_domain,Ⓜ️ OneDrive
+  - RULE-SET,Microsoft_domain,Ⓜ️ Microsoft
+  - RULE-SET,XiaoMi_domain,🎯 Direct
+  - RULE-SET,GoogleFCM_domain,📢 Google FCM
+  - RULE-SET,Epic_domain,🎮 Game
+  - RULE-SET,Origin_domain,🎮 Game
+  - RULE-SET,Sony_domain,🎮 Game
+  - RULE-SET,Steam_domain,🎮 Game
+  - RULE-SET,Nintendo_domain,🎮 Game
+  - RULE-SET,Netflix_domain,🎥 Netflix
+  - RULE-SET,Biliintl_domain,📺 哔哩哔哩
+  - RULE-SET,Bilibili_domain,📺 哔哩哔哩
+  - RULE-SET,ChinaMedia_domain,🎯 Direct
+  - RULE-SET,IPTVMainland_domain,🎯 Direct
+  - RULE-SET,GlobalMedia_domain,🌍 Global Media
+  - RULE-SET,Proxy_domain,🚀 节点选择
+
+  - RULE-SET,Telegram_ip,💬 Telegram,no-resolve
+  - RULE-SET,Apple_ip,🍎 Apple,no-resolve
+  - RULE-SET,Netflix_ip,🎥 Netflix,no-resolve
+  - RULE-SET,Bilibili_ip,📺 哔哩哔哩,no-resolve
+  - RULE-SET,ChinaMedia_ip,🎯 Direct
+  - RULE-SET,GlobalMedia_ip,🌍 Global Media,no-resolve
+
+  - RULE-SET,cn_domain,🎯 Direct
+  - RULE-SET,cn_ip,🎯 Direct
+  - RULE-SET,Private_ip,🎯 Direct
+  - GEOIP,cn,🎯 Direct
+  - MATCH,🐟 漏网之鱼
+rule-anchor:
+  ip: &ip {type: http, interval: 86400, behavior: ipcidr, format: mrs}
+  domain: &domain {type: http, interval: 86400, behavior: domain, format: mrs}
+  class: &class {type: http, interval: 86400, behavior: classical, format: text}
+rule-providers: 
+
+  Private_domain: {!!merge <<: *domain, path: ./ruleset/Private_domain.mrs, url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/private.mrs}
+  Private_ip: {!!merge <<: *ip, path: ./ruleset/Private_ip.mrs, url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/private.mrs}
+
+  AI_domain: {!!merge <<: *domain, path: ./ruleset/AI_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-ai-chat-!cn.mrs"}
+
+  Steam_CDN: {!!merge <<: *class, path: ./ruleset/Steam_CDN.list, url: "https://raw.githubusercontent.com/Aethersailor/Custom_OpenClash_Rules/main/rule/Steam_CDN.list"}
+  Game_Download_CDN: {!!merge <<: *class, path: ./ruleset/Game_Download_CDN.list, url: "https://raw.githubusercontent.com/Aethersailor/Custom_OpenClash_Rules/main/rule/Game_Download_CDN.list"}
+
+  Telegram_domain: {!!merge <<: *domain, path: ./ruleset/Telegram_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/telegram.mrs"}
+  Telegram_ip: {!!merge <<: *ip, path: ./ruleset/Telegram_ip.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/telegram.mrs"}
+
+  YouTube_domain: {!!merge <<: *domain, path: ./ruleset/YouTube_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/youtube.mrs"}
+
+  Github-domain: {!!merge <<: *domain, path: ./ruleset/Github-domain.mrs, url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/github.mrs}
+
+  Apple_domain: {!!merge <<: *domain, path: ./ruleset/Apple_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/apple.mrs"}
+  Apple_ip: {!!merge <<: *ip, path: ./ruleset/Apple_ip.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo-lite/geoip/apple.mrs"}
+
+  Bing_domain: {!!merge <<: *domain, path: ./ruleset/Bing_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/bing.mrs"}
+  OneDrive_domain: {!!merge <<: *domain, path: ./ruleset/OneDrive_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/onedrive.mrs"}
+  Microsoft_domain: {!!merge <<: *domain, path: ./ruleset/Microsoft_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/microsoft.mrs"}
+
+  XiaoMi_domain: {!!merge <<: *domain, path: ./ruleset/XiaoMi_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/xiaomi.mrs"}
+
+  GoogleFCM_domain: {!!merge <<: *domain, path: ./ruleset/GoogleFCM_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/googlefcm.mrs"}
+
+  Epic_domain: {!!merge <<: *domain, path: ./ruleset/Epic_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/epicgames.mrs"}
+  Origin_domain: {!!merge <<: *domain, path: ./ruleset/Origin_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/origin.mrs"}
+  Sony_domain: {!!merge <<: *domain, path: ./ruleset/Sony_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/sony.mrs"}
+  Steam_domain: {!!merge <<: *domain, path: ./ruleset/Steam_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/steam.mrs"}
+  Nintendo_domain: {!!merge <<: *domain, path: ./ruleset/Nintendo_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/nintendo.mrs"}
+
+  Netflix_domain: {!!merge <<: *domain, path: ./ruleset/Netflix_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/netflix.mrs"}
+  Netflix_ip: {!!merge <<: *ip, path: ./ruleset/Netflix_ip.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/netflix.mrs"}
+
+  Biliintl_domain: {!!merge <<: *domain, path: ./ruleset/Biliintl_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/biliintl.mrs"}
+
+  Bilibili_domain: {!!merge <<: *domain, path: ./ruleset/Bilibili_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/bilibili.mrs"}
+  Bilibili_ip: {!!merge <<: *ip, path: ./ruleset/Bilibili_ip.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo-lite/geoip/bilibili.mrs"}
+
+  ChinaMedia_domain: {!!merge <<: *domain, path: ./ruleset/ChinaMedia_domain.mrs, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/ChinaMedia/ChinaMedia_OCD_Domain.mrs"}
+  ChinaMedia_ip: {!!merge <<: *ip, path: ./ruleset/ChinaMedia_ip.mrs, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/ChinaMedia/ChinaMedia_OCD_IP.mrs"}
+
+  IPTVMainland_domain: {!!merge <<: *domain, path: ./ruleset/IPTVMainland_domain.mrs, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/IPTVMainland/IPTVMainland_OCD_Domain.mrs"}
+
+  GlobalMedia_domain: {!!merge <<: *domain, path: ./ruleset/GlobalMedia_domain.mrs, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/GlobalMedia/GlobalMedia_OCD_Domain.mrs"}
+  GlobalMedia_ip: {!!merge <<: *ip, path: ./ruleset/GlobalMedia_ip.mrs, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/GlobalMedia/GlobalMedia_OCD_IP.mrs"}
+
+  Download_domain: {!!merge <<: *domain, path: ./ruleset/Download_domain.mrs, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/Download/Download_OCD_Domain.mrs"}
+
+  cn_domain: {!!merge <<: *domain, path: ./ruleset/cn_domain.mrs, url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/cn.mrs}
+  cn_ip: {!!merge <<: *ip, path: ./ruleset/cn_ip.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/cn.mrs"}
+
+  Proxy_domain: {!!merge <<: *domain, path: ./ruleset/Proxy_domain.mrs, url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/geolocation-!cn.mrs}

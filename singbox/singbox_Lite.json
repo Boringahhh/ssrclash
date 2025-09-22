@@ -112,7 +112,7 @@
       {"tag": "geosite-netflix", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/netflix.srs", "download_detour": "🎯 全球直连"},
       {"tag": "geoip-netflix", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geoip/netflix.srs", "download_detour": "🎯 全球直连"},
 
-      {"tag": "SNTP", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://raw.githubusercontent.com/Boringahhh/ssrclash/new/singbox/config/SNTP.json", "download_detour": "🎯 全球直连"},
+      {"tag": "SNTP", "type": "remote", "format": "source", "url": "https://gh-proxy.com/https://raw.githubusercontent.com/Boringahhh/ssrclash/new/singbox/config/SNTP.json", "download_detour": "🎯 全球直连"},
       
       {"tag": "stream_non_ip", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://github.com/yyhhyyyyyy/sing-box-ruleset/raw/main/non_ip/stream.srs", "download_detour": "🎯 全球直连"},
       {"tag": "stream_ip", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://github.com/yyhhyyyyyy/sing-box-ruleset/raw/main/ip/stream.srs", "download_detour": "🎯 全球直连"},

@@ -60,7 +60,7 @@
     {"tag": "🇸🇬 韩国节点", "type": "urltest", "outbounds": ["{all}"], "filter": [{"action": "include", "keywords": ["🇰🇷|韩国|KR|KOR|Korea|korea|KOREA"]}], "interval": "5m", "tolerance": 20},
     {"tag": "🇺🇲 美国节点", "type": "urltest", "outbounds": ["{all}"], "filter": [{"action": "include", "keywords": ["🇺🇸|US|us|美国|美|United States"]}], "interval": "5m", "tolerance": 20},
 
-    {"tag": "GLOBAL", "type": "selector", "outbounds": ["🚀 节点选择", "♻️ 自动选择", "💬 Telegram", "🤖 AIGC", "📹 YouTube", "🎥 Netflix", "Ⓜ️ Microsoft", "Ⓜ️ OneDrive", "🍎 Apple", "🎮 Steam", "🐟 漏网之鱼", "🇭🇰 香港节点", "🇸🇬 新加坡节点", "🇸🇬 台湾节点", "🇯🇵 日本节点", "🇸🇬 韩国节点", "🇺🇲 美国节点", "🚀 手动切换", "🎯 全球直连"]},
+    {"tag": "GLOBAL", "type": "selector", "outbounds": ["🚀 节点选择", "♻️ 自动选择", "💾 下载&更新", "💬 Telegram", "🤖 AIGC", "📹 YouTube", "🎥 Netflix", "🌍 Global Media", "Ⓜ️ Microsoft", "🍎 Apple", "🎮 Steam", "🐟 漏网之鱼", "🇭🇰 香港节点", "🇸🇬 新加坡节点", "🇸🇬 台湾节点", "🇯🇵 日本节点", "🇸🇬 韩国节点", "🇺🇲 美国节点", "🚀 手动切换", "🎯 全球直连"]},
     {"tag": "🎯 全球直连", "type": "direct"},
     {"tag": "block", "type": "block"}
   ],

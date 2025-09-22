@@ -108,6 +108,7 @@ dns:
   # 黑名单模式表示如果匹配成功则不返回 Fake-IP, 白名单模式时只有匹配成功才返回 Fake-IP
   fake-ip-filter-mode: blacklist
   fake-ip-filter:
+    - "rule-set:rule-set:amend_direct,apple_cdn,apple_cn_non_ip,domestic_non_ip,WeChat_domain,direct_non_ip"
     - +.+m2m
     - +.$injections.adguard.org
     - +.$local.adguard.org
@@ -153,7 +154,7 @@ dns:
     - 223.5.5.5
     - 119.29.29.29
   nameserver-policy:
-    'rule-set:apple_cdn,microsoft_cdn_non_ip,apple_cn_non_ip,domestic_non_ip,WeChat_domain':
+    'rule-set:amend_direct,apple_cdn,apple_cn_non_ip,domestic_non_ip,WeChat_domain,direct_non_ip':
     - "https://223.5.5.5/dns-query"
     - "https://doh.pub/dns-query"
     'rule-set:global_non_ip,cdn_domainset,cdn_non_ip':
@@ -250,7 +251,7 @@ rules:
   - RULE-SET,download_domainset,💾 下载&更新
   - RULE-SET,download_non_ip,💾 下载&更新
   - RULE-SET,apple_cdn,🎯 Direct
-  - RULE-SET,microsoft_cdn_non_ip,🎯 Direct
+  - RULE-SET,microsoft_cdn_non_ip,Ⓜ️ Microsoft
   - RULE-SET,apple_cn_non_ip,🎯 Direct
   - RULE-SET,apple_services,🍎 Apple
   - RULE-SET,microsoft_non_ip,Ⓜ️ Microsoft

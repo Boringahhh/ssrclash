@@ -90,6 +90,7 @@
       {"rule_set": ["microsoft_non_ip"], "outbound": "Ⓜ️ Microsoft"},
       {"rule_set": ["global_non_ip"], "outbound": "🚀 节点选择"},
       {"rule_set": ["geosite-!cn"], "outbound": "🚀 节点选择"},
+      {"rule_set": ["WeChat_domain"], "outbound": "🎯 全球直连"},
       {"rule_set": ["domestic_non_ip", "lan_non_ip", "direct_non_ip"], "outbound": "🎯 全球直连"},
       {"rule_set": ["telegram_ip"], "outbound": "💬 Telegram"},
       {"rule_set": ["geoip-netflix"], "outbound": "🎥 Netflix"},
@@ -134,6 +135,8 @@
       
       {"tag": "geosite-steamcn", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/steam@cn.srs", "download_detour": "🎯 全球直连"},
       {"tag": "geosite-steam", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/steam.srs", "download_detour": "🎯 全球直连"},
+
+      {"tag": "WeChat_domain", "type": "remote", "format": "source", "url": "https://gh-proxy.com/https://raw.githubusercontent.com/Boringahhh/ssrclash/new/singbox/config/WeChat.json", "download_detour": "🎯 全球直连"},
       
       {"tag": "lan_non_ip", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://github.com/yyhhyyyyyy/sing-box-ruleset/raw/main/non_ip/lan.srs", "download_detour": "🎯 全球直连"},
       {"tag": "lan_ip", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://github.com/yyhhyyyyyy/sing-box-ruleset/raw/main/ip/lan.srs", "download_detour": "🎯 全球直连"},

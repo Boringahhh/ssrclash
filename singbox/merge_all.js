@@ -38,15 +38,15 @@ let proxies = await produceArtifact({
 });
 
 // 4. 去重已有节点tag
-// const existingTags = config.outbounds.map(o => o.tag);
-// proxies = proxies.filter(p => !existingTags.includes(p.tag));
+const existingTags = config.outbounds.map(o => o.tag);
+proxies = proxies.filter(p => !existingTags.includes(p.tag));
 
 // 5. 添加新节点到 outbounds
 config.outbounds.push(...proxies);
 
 // 6. 准备 tag 列表
-// const allTags = proxies.map(p => p.tag);
-// const terminalTags = proxies.filter(p => !p.detour).map(p => p.tag);
+const allTags = proxies.map(p => p.tag);
+const terminalTags = proxies.filter(p => !p.detour).map(p => p.tag);
 
 // 7. 遍历分组追加节点
 config.outbounds.forEach(group => {
@@ -60,11 +60,11 @@ config.outbounds.forEach(group => {
 });
 
 // 8. 分组内去重
-// config.outbounds.forEach(group => {
-//   if (Array.isArray(group.outbounds)) {
-//     group.outbounds = [...new Set(group.outbounds)];
-//   }
-// });
+config.outbounds.forEach(group => {
+  if (Array.isArray(group.outbounds)) {
+    group.outbounds = [...new Set(group.outbounds)];
+  }
+});
 
 // 9. 输出最终配置
 $content = JSON.stringify(config, null, 2);

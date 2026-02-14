@@ -14,7 +14,7 @@ proxy-providers:
     proxy: 🎯 Direct
     url: "订阅链接1"
     override:
-      additional-prefix: "[机场名称1]"
+      # additional-prefix: "[机场名称1]"
       skip-cert-verify: true  # 绕过证书验证
       udp: true # 开启udp
   订阅2:
@@ -28,7 +28,7 @@ proxy-providers:
     proxy: 🎯 Direct
     url: "订阅链接2"
     override:
-      additional-prefix: "[机场名称2]"
+      # additional-prefix: "[机场名称2]"
       skip-cert-verify: true  # 绕过证书验证
       udp: true # 开启udp
       
@@ -190,7 +190,7 @@ LoadBalance: &LoadBalance {type: load-balance, interval: 300, lazy: true, url: '
 # 策略组
 proxy-groups:
   - {name: 🚀 节点选择, type: select, proxies: [♻️ 自动选择, 🇭🇰 香港节点, 🇸🇬 新加坡节点, 🇨🇳 台湾节点, 🇯🇵 日本节点, 🇺🇸 美国节点, 🇰🇷 韩国节点, 🇭🇰 香港低倍率, 🇸🇬 新加坡低倍率, 🇨🇳 台湾低倍率, 🇯🇵 日本低倍率, 🇺🇸 美国低倍率, 🇭🇰 香港高倍率, 🇸🇬 新加坡高倍率, 🇨🇳 台湾高倍率, 🇪🇺 欧洲节点, 🇺🇳 其他地区, 🚀 手动切换, 💠 备用, 🎯 Direct]}
-  - {name: ♻️ 自动选择,type: select, proxies: [🇭🇰 香港节点, 🇸🇬 新加坡节点, 🇨🇳 台湾节点, 🇯🇵 日本节点, 🇺🇸 美国节点, 🇰🇷 韩国节点, 🇭🇰 香港低倍率, 🇸🇬 新加坡低倍率, 🇨🇳 台湾低倍率, 🇯🇵 日本低倍率, 🇺🇸 美国低倍率, 🇭🇰 香港高倍率, 🇸🇬 新加坡高倍率, 🇨🇳 台湾高倍率, 🇪🇺 欧洲节点, 🇺🇳 其他地区]}
+  - {name: ♻️ 自动选择, <<: *UrlTest, proxies: [🇭🇰 香港节点, 🇸🇬 新加坡节点, 🇨🇳 台湾节点, 🇯🇵 日本节点, 🇺🇸 美国节点, 🇰🇷 韩国节点, 🇭🇰 香港低倍率, 🇸🇬 新加坡低倍率, 🇨🇳 台湾低倍率, 🇯🇵 日本低倍率, 🇺🇸 美国低倍率, 🇭🇰 香港高倍率, 🇸🇬 新加坡高倍率, 🇨🇳 台湾高倍率, 🇪🇺 欧洲节点, 🇺🇳 其他地区]}
   - {name: 💾 下载&更新, <<: *pr1}
   - {name: 💬 Telegram, <<: *pr2}
   - {name: 🤖 AIGC, type: select, proxies: [🇺🇸 美国节点, 🇭🇰 香港节点, 🇨🇳 台湾节点, 🇯🇵 日本节点, 🇪🇺 欧洲节点, 🇺🇳 其他地区, 🚀 节点选择, 🚀 手动切换, 🎯 Direct]}
@@ -251,7 +251,7 @@ rules:
   - RULE-SET,download_domainset,💾 下载&更新
   - RULE-SET,download_non_ip,💾 下载&更新
   - RULE-SET,apple_cdn,🎯 Direct
-  - RULE-SET,microsoft_cdn_non_ip,Ⓜ️ Microsoft
+  - RULE-SET,microsoft_cdn_non_ip,🎯 Direct
   - RULE-SET,apple_cn_non_ip,🎯 Direct
   - RULE-SET,apple_services,🍎 Apple
   - RULE-SET,microsoft_non_ip,Ⓜ️ Microsoft
@@ -292,7 +292,7 @@ rule-providers:
 
   # 静态 CDN 域名
   cdn_domainset: { <<: *RuleSet_domain, path: ./ruleset/cdn_domainset.txt, url: https://ruleset.skk.moe/Clash/domainset/cdn.txt}
-  cdn_non_ip: { <<: *RuleSet_domain, path: ./ruleset/cdn_non_ip.txt, url: https://ruleset.skk.moe/Clash/non_ip/cdn.txt}
+  cdn_non_ip: { <<: *RuleSet_classical, path: ./ruleset/cdn_non_ip.txt, url: https://ruleset.skk.moe/Clash/non_ip/cdn.txt}
 
   # Youtube
   YouTube_domain: { <<: *domain, path: ./ruleset/YouTube_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/youtube.mrs"}
@@ -326,13 +326,13 @@ rule-providers:
 
   # 软件、游戏和驱动的下载和更新域名
   download_domainset: { <<: *RuleSet_domain, path: ./ruleset/download_domainset.txt, url: https://ruleset.skk.moe/Clash/domainset/download.txt}
-  download_non_ip: { <<: *RuleSet_domain, path: ./ruleset/download_non_ip.txt, url: https://ruleset.skk.moe/Clash/non_ip/download.txt}
+  download_non_ip: { <<: *RuleSet_classical, path: ./ruleset/download_non_ip.txt, url: https://ruleset.skk.moe/Clash/non_ip/download.txt}
 
   # 游戏
   Epic_domain: { <<: *domain, path: ./ruleset/Epic_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/epicgames.mrs"}
   Origin_domain: { <<: *domain, path: ./ruleset/Origin_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/origin.mrs"}
   Sony_domain: { <<: *domain, path: ./ruleset/Sony_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/sony.mrs"}
-  SteamCN_domain: { <<: *domain, path: ./ruleset/Steam_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/steam@cn.mrs"}
+  SteamCN_domain: { <<: *domain, path: ./ruleset/SteamCN_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/steam@cn.mrs"}
   Steam_domain: { <<: *domain, path: ./ruleset/Steam_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/steam.mrs"}
   Nintendo_domain: { <<: *domain, path: ./ruleset/Nintendo_domain.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/nintendo.mrs"}
 

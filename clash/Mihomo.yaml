@@ -1,0 +1,474 @@
+# >> 订阅配置
+proxy-providers:
+  订阅1:
+    type: http
+    interval: 86400
+    path: ./proxy_provider/Providers1.yaml
+    health-check:
+      enable: true
+      url: http://cp.cloudflare.com
+      interval: 300
+    proxy: 🎯 Direct
+    url: "订阅链接1"
+    override:
+      # additional-prefix: "[机场名称1]"
+      skip-cert-verify: true
+      udp: true
+  # 订阅2:
+  #   type: http
+  #   interval: 86400
+  #   path: ./proxy_provider/Providers2.yaml
+  #   health-check:
+  #     enable: true
+  #     url: http://cp.cloudflare.com
+  #     interval: 300
+  #   proxy: 🎯 Direct
+  #   url: "订阅链接2"
+  #   override:
+  #     # additional-prefix: "[机场名称2]"
+  #     skip-cert-verify: true
+  #     udp: true
+
+# 全局配置
+mixed-port: 7890
+# 局域网连接：允许其他设备经过本机代理
+allow-lan: true
+mode: rule
+# 日志级别
+log-level: warning
+ipv6: false
+find-process-mode: strict
+unified-delay: true
+tcp-concurrent: true
+global-client-fingerprint: chrome
+
+# 外部控制(API) 如果使用的是裸核，需要将下面的注释#去掉，方便ui界面的使用
+# external-controller: 0.0.0.0:9090
+# external-ui: "./run/ui"
+# external-ui-url: "https://gh-proxy.com/https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip"
+# API 的访问密钥
+# secret: "123456"
+
+# 缓存
+profile:
+  store-selected: true
+  store-fake-ip: true
+
+# GEOIP 数据库
+geodata-mode: false
+geo-auto-update: true
+geo-update-interval: 24
+geox-url:
+  mmdb: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/country.mmdb"
+
+# DNS配置
+dns:
+  enable: true
+  prefer-h3: true
+  ipv6: false
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  # fake-ip-range6: fdfe:dcba:9876::1/64
+  fake-ip-filter:
+    - +.m2m
+    - injections.adguard.org
+    - local.adguard.org
+    - +.bogon
+    - +.local
+    - +.lan
+    - +.internal
+    - +.localdomain
+    - home.arpa
+    - 127.0.0.1.sslip.io
+    - 127.atlas.skk.moe
+    - dns.msftncsi.com
+    - "*.srv.nintendo.net"
+    - "*.stun.playstation.net"
+    - xbox.*.microsoft.com
+    - "*.xboxlive.com"
+    - "*.turn.twilio.com"
+    - "*.stun.twilio.com"
+    - stun.syncthing.net
+    - stun.*
+    - 127.*.*.*.sslip.io
+    - 127-*-*-*.sslip.io
+    - "*.127.*.*.*.sslip.io"
+    - "*-127-*-*-*.sslip.io"
+    - 127.*.*.*.nip.io
+    - 127-*-*-*.nip.io
+    - "*.127.*.*.*.nip.io"
+    - "*-127-*-*-*.nip.io"
+  nameserver:
+    # 公司等公共场合下，不建议使用system
+    # - system
+    - https://223.5.5.5/dns-query
+    - https://doh.pub/dns-query
+  proxy-server-nameserver:
+    - https://223.5.5.5/dns-query
+    - https://doh.pub/dns-query
+
+# 域名嗅探
+sniffer:
+  enable: true
+  sniff:
+    HTTP:
+      ports: [80, 8080-8880]
+      override-destination: true
+    TLS:
+      ports: [443, 8443]
+    QUIC:
+      ports: [443, 8443]
+  skip-domain:
+    - "Mijia Cloud"
+    - "+.push.apple.com"
+
+# Tunnel配置
+tun:
+  enable: true
+  stack: system
+  auto-route: true
+  auto-redirect: true
+  auto-detect-interface: true
+  dns-hijack:
+    - any:53
+    - tcp://any:53
+  strict-route: true
+
+
+proxies:
+- name: "🎯 Direct"
+  type: direct
+  udp: true
+
+# 策略组锚点
+pr1: &pr1 {type: select, proxies: [🪁 Nodes, 🇭🇰 Hong Kong, 🇸🇬 Singapore, 🇨🇳 Taiwan, 🇯🇵 Japan, 🇺🇸 USA, 💠 Backup, 🇺🇳 Others, ✋ Manual, 🎯 Direct]}
+pr2: &pr2 {type: select, proxies: [🎯 Direct, 🪁 Nodes, 🇭🇰 Hong Kong, 🇸🇬 Singapore, 🇨🇳 Taiwan, 🇯🇵 Japan, 🇺🇸 USA, 💠 Backup, 🇺🇳 Others, ✋ Manual]}
+
+# 代理组锚点
+UrlTest: &UrlTest {type: url-test, interval: 300, tolerance: 20, url: 'http://cp.cloudflare.com', disable-udp: false, timeout: 2000, max-failed-times: 3, lazy: true, include-all-providers: true}
+FallBack: &FallBack {type: fallback, interval: 300, lazy: true, url: 'http://cp.cloudflare.com', disable-udp: false, timeout: 2000, max-failed-times: 3, include-all-providers: true}
+LoadBalance: &LoadBalance {type: load-balance, interval: 300, lazy: true, url: 'http://cp.cloudflare.com', disable-udp: false, strategy: consistent-hashing, timeout: 2000, max-failed-times: 3, include-all-providers: true}
+
+# 策略组
+proxy-groups:
+  - {name: 🪁 Nodes, type: select, proxies: [🔍︎ Auto, 🇭🇰 Hong Kong, 🇸🇬 Singapore, 🇨🇳 Taiwan, 🇯🇵 Japan, 🇺🇸 USA, 🇺🇳 Others, 💠 Backup, ✋ Manual, 🎯 Direct]}
+  - {name: 🔍︎ Auto, <<: *UrlTest, proxies: [🇭🇰 Hong Kong, 🇸🇬 Singapore, 🇨🇳 Taiwan, 🇯🇵 Japan, 🇺🇸 USA, 💠 Backup, ✋ Manual]}
+  - {name: 💾 Download, <<: *pr1}
+  - {name: 💬 Telegram, <<: *pr1}
+  - {name: 🎼 Spotify, type: select, proxies: [🪁 Nodes, 🇭🇰 Hong Kong, 🇸🇬 Singapore, 🇨🇳 Taiwan, 🇯🇵 Japan, 🇺🇸 USA, 🇹🇷 Turkey, 💠 Backup, 🇺🇳 Others, ✋ Manual, 🎯 Direct]}
+  - {name: 🎮 Gaming, type: select, proxies: [🪁 Nodes, 🇭🇰 Hong Kong, 🇸🇬 Singapore, 🇨🇳 Taiwan, 🇯🇵 Japan, 🇺🇸 USA, 🇹🇷 Turkey, 💠 Backup, 🇺🇳 Others, ✋ Manual, 🎯 Direct]}
+  - {name: 📹 Global Media, <<: *pr1}
+  - {name: 📹 HK&TW Media, <<: *pr2}
+  - {name: 🎥 Emby, <<: *pr2}
+  - {name: 🤖 AIGC, type: select, proxies: [🇺🇸 USA, 🇭🇰 Hong Kong, 🇨🇳 Taiwan, 🇯🇵 Japan, 🇪🇺 Europe, 🇺🇳 Others, 🪁 Nodes, ✋ Manual, 🎯 Direct]}
+  - {name: 💾 Microsoft, <<: *pr2}
+  - {name: 🍎 Apple, <<: *pr2}
+  - {name: 🐟 Fallback, <<: *pr1}
+
+  - {name: ✋ Manual, type: select, include-all: true}
+  - {name: 🇭🇰 Hong Kong, <<: *UrlTest, filter: "(?i)^(?!.*备用)(?!.*(x0\\.01|x0\\.8)).*(🇭🇰|港|\\bHK\\b|\\bHKG\\b|Hong)"}
+  - {name: 🇸🇬 Singapore, <<: *UrlTest, filter: "(?i)^(?!.*(x0\\.01|x0\\.8)).*(🇸🇬|新加坡|\\bSG\\b|Singapore)"}
+  - {name: 🇨🇳 Taiwan, <<: *UrlTest, filter: "(?i)^(?!.*(x0\\.01|x0\\.8)).*(🇨🇳|台|\\bTW\\b|Taiwan)"}
+  - {name: 🇯🇵 Japan, <<: *UrlTest, filter: "(?i)^(?!.*(x0\\.01|x0\\.8)).*(🇯🇵|日本|\bJP\b|(?i)Japan)"}
+  - {name: 🇺🇸 USA, <<: *UrlTest, filter: "(?i)^(?!.*(x0\\.01|x0\\.8)).*(🇺🇸|美|\\bUSA?\\b|United\\sStates)"}
+  - {name: 🇰🇷 Korea, <<: *UrlTest, filter: "(?=.*(🇰🇷|韩国|\bKR\b|(?i)Korea)).*$"}
+  - {name: 🇪🇺 Europe,type: select, include-all: true, filter: "(?=.*(🇩🇪|德国|\bDE\b|(?i)Germany|🇫🇷|法国|\bFR\b|(?i)France|🇮🇹|意大利|\bIT\b|(?i)Italy|🇪🇸|西班牙|\bES\b|(?i)Spain|🇬🇧|英国|\bUK\b|United Kingdom)).*$"}
+  - {name: 🇹🇷 Turkey,type: select, include-all: true, filter: "(?i).*(🇹🇷|土耳其|\\bTR\\b|\\bTUR\\b|Turkey)"}
+  - {name: 🇺🇳 Others,type: select, include-all: true, filter: "^((?!(🇭🇰|🇸🇬|🇨🇳|🇯🇵|🇺🇸|DIRECT|🎯 Direct)).)*$"}
+  - {name: 💠 Backup, <<: *UrlTest, filter: "(?=.*备用)"}
+  - {name: 🛑 AdBlock, type: select, proxies: [REJECT, 🎯 Direct, 🪁 Nodes]}
+
+## 规则组锚点
+RuleSet_classical: &RuleSet_classical {type: http, behavior: classical, interval: 43200, format: text, proxy: 🪁 Nodes}
+RuleSet_domain: &RuleSet_domain {type: http, behavior: domain, interval: 43200, format: text, proxy: 🪁 Nodes}
+RuleSet_ipcidr: &RuleSet_ipcidr {type: http, behavior: ipcidr, interval: 43200, format: text, proxy: 🪁 Nodes}
+ip: &ip {type: http, interval: 86400, behavior: ipcidr, format: mrs}
+domain: &domain {type: http, interval: 86400, behavior: domain, format: mrs}
+
+# 规则
+rule-providers:
+
+  # 规则修正
+  amend_direct:
+    <<: *RuleSet_classical
+    url: "https://raw.githubusercontent.com/Boringahhh/ssrclash/new/clash/config/Direct.list"
+    path: ./ruleset/amend_direct.list
+
+  # 广告拦截 / 隐私保护 / 病毒拦截 / 钓鱼和诈骗域名拦截
+  reject_non_ip_no_drop:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/non_ip/reject-no-drop.txt
+    path: ./ruleset/sukkaw_ruleset/reject_non_ip_no_drop.txt
+  reject_non_ip_drop:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/non_ip/reject-drop.txt
+    path: ./ruleset/sukkaw_ruleset/reject_non_ip_drop.txt
+  reject_non_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/non_ip/reject.txt
+    path: ./ruleset/sukkaw_ruleset/reject_non_ip.txt
+  reject_domainset:
+    <<: *RuleSet_domain
+    url: https://ruleset.skk.moe/Clash/domainset/reject.txt
+    path: ./ruleset/sukkaw_ruleset/reject_domainset.txt
+  reject_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/ip/reject.txt
+    path: ./ruleset/sukkaw_ruleset/reject_ip.txt
+
+  # 静态 CDN 域名
+  cdn_domainset:
+    <<: *RuleSet_domain
+    url: https://ruleset.skk.moe/Clash/domainset/cdn.txt
+    path: ./ruleset/sukkaw_ruleset/cdn_domainset.txt
+  cdn_non_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/non_ip/cdn.txt
+    path: ./ruleset/sukkaw_ruleset/cdn_non_ip.txt
+
+  # Spotify
+  Spotify_domain:
+    <<: *domain
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/spotify.mrs"
+    path: ./ruleset/Spotify_domain.mrs
+
+  # 北美相关流媒体
+  stream_us_non_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/non_ip/stream_us.txt
+    path: ./ruleset/sukkaw_ruleset/stream_us_non_ip.txt
+  stream_us_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/ip/stream_us.txt
+    path: ./ruleset/sukkaw_ruleset/stream_us_ip.txt
+
+  # 欧洲相关流媒体
+  stream_eu_non_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/non_ip/stream_eu.txt
+    path: ./ruleset/sukkaw_ruleset/stream_eu_non_ip.txt
+  stream_eu_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/ip/stream_eu.txt
+    path: ./ruleset/sukkaw_ruleset/stream_eu_ip.txt
+
+  # 日本相关流媒体
+  stream_jp_non_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/non_ip/stream_jp.txt
+    path: ./ruleset/sukkaw_ruleset/stream_jp_non_ip.txt
+  stream_jp_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/ip/stream_jp.txt
+    path: ./ruleset/sukkaw_ruleset/stream_jp_ip.txt
+
+  # 韩国相关流媒体
+  stream_kr_non_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/non_ip/stream_kr.txt
+    path: ./ruleset/sukkaw_ruleset/stream_kr_non_ip.txt
+  stream_kr_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/ip/stream_kr.txt
+    path: ./ruleset/sukkaw_ruleset/stream_kr_ip.txt
+
+  # 香港相关流媒体
+  stream_hk_non_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/non_ip/stream_hk.txt
+    path: ./ruleset/sukkaw_ruleset/stream_hk_non_ip.txt
+  stream_hk_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/ip/stream_hk.txt
+    path: ./ruleset/sukkaw_ruleset/stream_hk_ip.txt
+
+  # 台湾相关流媒体
+  stream_tw_non_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/non_ip/stream_tw.txt
+    path: ./ruleset/sukkaw_ruleset/stream_tw_non_ip.txt
+  stream_tw_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/ip/stream_tw.txt
+    path: ./ruleset/sukkaw_ruleset/stream_tw_ip.txt
+
+  # 所有流媒体（包括上述所有流媒体）
+  stream_non_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/non_ip/stream.txt
+    path: ./ruleset/sukkaw_ruleset/stream_non_ip.txt
+  stream_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/ip/stream.txt
+    path: ./ruleset/sukkaw_ruleset/stream_ip.txt
+
+  # Emby
+  SNTP:
+    <<: *RuleSet_classical
+    url: "https://raw.githubusercontent.com/Boringahhh/ssrclash/new/clash/config/SNTP.list"
+    path: ./ruleset/SNTP.list
+
+  # AIGC
+  ai_non_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/non_ip/ai.txt
+    path: ./ruleset/sukkaw_ruleset/ai_non_ip.txt
+  apple_intelligence_non_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/non_ip/apple_intelligence.txt
+    path: ./ruleset/sukkaw_ruleset/apple_intelligence_non_ip.txt
+
+  # Telegram
+  telegram_non_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/non_ip/telegram.txt
+    path: ./ruleset/sukkaw_ruleset/telegram_non_ip.txt
+  telegram_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/ip/telegram.txt
+    path: ./ruleset/sukkaw_ruleset/telegram_ip.txt
+
+  # Apple CDN / Apple Service / # Apple CN
+  apple_cdn:
+    <<: *RuleSet_domain
+    url: https://ruleset.skk.moe/Clash/domainset/apple_cdn.txt
+    path: ./ruleset/sukkaw_ruleset/apple_cdn.txt
+  apple_services:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/non_ip/apple_services.txt
+    path: ./ruleset/sukkaw_ruleset/apple_services.txt
+  apple_cn_non_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/non_ip/apple_cn.txt
+    path: ./ruleset/sukkaw_ruleset/apple_cn_non_ip.txt
+
+  # Microsoft CDN / Microsoft
+  microsoft_cdn_non_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/non_ip/microsoft_cdn.txt
+    path: ./ruleset/sukkaw_ruleset/microsoft_cdn_non_ip.txt
+  microsoft_non_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/non_ip/microsoft.txt
+    path: ./ruleset/sukkaw_ruleset/microsoft_non_ip.txt
+
+  # 软件、游戏和驱动的下载和更新域名
+  download_domainset:
+    <<: *RuleSet_domain
+    url: https://ruleset.skk.moe/Clash/domainset/download.txt
+    path: ./ruleset/sukkaw_ruleset/download_domainset.txt
+  download_non_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/non_ip/download.txt
+    path: ./ruleset/sukkaw_ruleset/download_non_ip.txt
+
+  # 游戏
+  SteamCN_domain: 
+    <<: *domain
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/steam@cn.mrs"
+    path: ./ruleset/Steam_domain.mrs
+  Steam_domain:
+    <<: *domain
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/steam.mrs"
+    path: ./ruleset/Steam_domain.mrs
+  Epic_domain:
+    <<: *domain
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/epicgames.mrs"
+    path: ./ruleset/Epic_domain.mrs
+
+  # WeChat
+  WeChat_domain:
+    <<: *domain
+    url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/master/rule/Clash/WeChat/WeChat_OCD_Domain.mrs"
+    path: ./ruleset/WeChat_domain.mrs
+
+  # 内网域名和局域网 IP
+  lan_non_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/non_ip/lan.txt
+    path: ./ruleset/sukkaw_ruleset/lan_non_ip.txt
+  lan_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/ip/lan.txt
+    path: ./ruleset/sukkaw_ruleset/lan_ip.txt
+
+  domestic_non_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/non_ip/domestic.txt
+    path: ./ruleset/sukkaw_ruleset/domestic_non_ip.txt
+  direct_non_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/non_ip/direct.txt
+    path: ./ruleset/sukkaw_ruleset/direct_non_ip.txt
+  
+  # Global
+  global_non_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/non_ip/global.txt
+    path: ./ruleset/sukkaw_ruleset/global_non_ip.txt
+  
+  # CN
+  domestic_ip:
+    <<: *RuleSet_classical
+    url: https://ruleset.skk.moe/Clash/ip/domestic.txt
+    path: ./ruleset/sukkaw_ruleset/domestic_ip.txt
+  china_ip:
+    <<: *RuleSet_ipcidr
+    url: https://ruleset.skk.moe/Clash/ip/china_ip.txt
+    path: ./ruleset/sukkaw_ruleset/china_ip.txt
+
+# 分流规则
+rules:
+  # 修正
+  - RULE-SET,amend_direct,🎯 Direct
+
+  # domain
+  - RULE-SET,reject_non_ip_drop,REJECT-DROP
+  - RULE-SET,reject_domainset,🛑 AdBlock
+  - RULE-SET,reject_non_ip,🛑 AdBlock
+  - RULE-SET,reject_non_ip_no_drop,🛑 AdBlock
+  - RULE-SET,cdn_domainset,🪁 Nodes
+  - RULE-SET,cdn_non_ip,🪁 Nodes
+  - RULE-SET,Spotify_domain,🎼 Spotify
+  - RULE-SET,stream_hk_non_ip,📹 HK&TW Media
+  - RULE-SET,stream_tw_non_ip,📹 HK&TW Media
+  - RULE-SET,stream_us_non_ip,🇺🇸 USA
+  - RULE-SET,stream_jp_non_ip,🇯🇵 Japan
+  - RULE-SET,stream_kr_non_ip,🇰🇷 Korea
+  - RULE-SET,stream_eu_non_ip,🇪🇺 Europe
+  - RULE-SET,stream_non_ip,📹 Global Media
+  - RULE-SET,SNTP,🎥 Emby
+  - RULE-SET,ai_non_ip,🤖 AIGC
+  - RULE-SET,apple_intelligence_non_ip,🤖 AIGC
+  - RULE-SET,telegram_non_ip,💬 Telegram
+  - RULE-SET,apple_cdn,🎯 Direct
+  - RULE-SET,apple_cn_non_ip,🎯 Direct
+  - RULE-SET,apple_services,🍎 Apple
+  - RULE-SET,microsoft_cdn_non_ip,🎯 Direct
+  - RULE-SET,microsoft_non_ip,💾 Microsoft
+  - RULE-SET,SteamCN_domain,🎯 Direct
+  - RULE-SET,download_domainset,💾 Download
+  - RULE-SET,download_non_ip,💾 Download
+  - RULE-SET,Steam_domain,🎮 Gaming
+  - RULE-SET,Epic_domain,🎮 Gaming
+  - RULE-SET,global_non_ip,🪁 Nodes
+  - RULE-SET,domestic_non_ip,🎯 Direct
+  - RULE-SET,WeChat_domain,🎯 Direct
+  - RULE-SET,direct_non_ip,🎯 Direct
+  - RULE-SET,lan_non_ip,DIRECT
+
+  # ip
+  - RULE-SET,reject_ip,🛑 AdBlock
+  - RULE-SET,stream_hk_ip,📹 HK&TW Media
+  - RULE-SET,stream_tw_ip,📹 HK&TW Media
+  - RULE-SET,stream_us_ip,🇺🇸 USA
+  - RULE-SET,stream_jp_ip,🇯🇵 Japan
+  - RULE-SET,stream_kr_ip,🇰🇷 Korea
+  - RULE-SET,stream_eu_ip,🇪🇺 Europe
+  - RULE-SET,stream_ip,📹 Global Media
+  - RULE-SET,telegram_ip,💬 Telegram
+  - RULE-SET,lan_ip,DIRECT
+  - RULE-SET,domestic_ip,🎯 Direct
+  - RULE-SET,china_ip,🎯 Direct
+  - GEOIP,cn,🎯 Direct
+  - MATCH,🐟 Fallback

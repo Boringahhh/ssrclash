@@ -169,12 +169,12 @@ proxy-groups:
   - {name: 🇭🇰 Hong Kong, <<: *UrlTest, filter: "(?i)^(?!.*备用)(?!.*(x0\\.01|x0\\.8)).*(🇭🇰|港|\\bHK\\b|\\bHKG\\b|Hong)"}
   - {name: 🇸🇬 Singapore, <<: *UrlTest, filter: "(?i)^(?!.*(x0\\.01|x0\\.8)).*(🇸🇬|新加坡|\\bSG\\b|Singapore)"}
   - {name: 🇨🇳 Taiwan, <<: *UrlTest, filter: "(?i)^(?!.*(x0\\.01|x0\\.8)).*(🇨🇳|台|\\bTW\\b|Taiwan)"}
-  - {name: 🇯🇵 Japan, <<: *UrlTest, filter: "(?i)^(?!.*(x0\\.01|x0\\.8)).*(🇯🇵|日本|\bJP\b|(?i)Japan)"}
+  - {name: 🇯🇵 Japan, <<: *UrlTest, filter: "(?i)^(?!.*(x0\\.01|x0\\.8)).*(🇯🇵|日本|\\bJP\\b|Japan)"}
   - {name: 🇺🇸 USA, <<: *UrlTest, filter: "(?i)^(?!.*(x0\\.01|x0\\.8)).*(🇺🇸|美|\\bUSA?\\b|United\\sStates)"}
-  - {name: 🇰🇷 Korea, <<: *UrlTest, filter: "(?=.*(🇰🇷|韩国|\bKR\b|(?i)Korea)).*$"}
-  - {name: 🇪🇺 Europe,type: select, include-all: true, filter: "(?=.*(🇩🇪|德国|\bDE\b|(?i)Germany|🇫🇷|法国|\bFR\b|(?i)France|🇮🇹|意大利|\bIT\b|(?i)Italy|🇪🇸|西班牙|\bES\b|(?i)Spain|🇬🇧|英国|\bUK\b|United Kingdom)).*$"}
-  - {name: 🇹🇷 Turkey,type: select, include-all: true, filter: "(?i).*(🇹🇷|土耳其|\\bTR\\b|\\bTUR\\b|Turkey)"}
-  - {name: 🇺🇳 Others,type: select, include-all: true, filter: "^((?!(🇭🇰|🇸🇬|🇨🇳|🇯🇵|🇺🇸|DIRECT|🎯 Direct)).)*$"}
+  - {name: 🇰🇷 Korea, <<: *UrlTest, filter: "(?i).*(🇰🇷|韩国|\\bKR\\b|Korea)"}
+  - {name: 🇪🇺 Europe, type: select, include-all: true, filter: "(?i).*(🇩🇪|德国|\\bDE\\b|Germany|🇫🇷|法国|\\bFR\\b|France|🇮🇹|意大利|\\bIT\\b|Italy|🇪🇸|西班牙|\\bES\\b|Spain|🇬🇧|英国|\\bUK\\b|United\\sKingdom)"}
+  - {name: 🇹🇷 Turkey, type: select, include-all: true, filter: "(?i).*(🇹🇷|土耳其|\\bTR\\b|\\bTUR\\b|Turkey)"}
+  - {name: 🇺🇳 Others, type: select, include-all: true, filter: "^((?!(🇭🇰|🇸🇬|🇨🇳|🇯🇵|🇺🇸|DIRECT|🎯 Direct)).)*$"}
   - {name: 💠 Backup, <<: *UrlTest, filter: "(?=.*备用)"}
   - {name: 🛑 AdBlock, type: select, proxies: [REJECT, 🎯 Direct, 🪁 Nodes]}
 

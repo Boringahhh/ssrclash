@@ -16,26 +16,35 @@ let proxies = await produceArtifact({
 config.outbounds.push(...proxies)
 
 config.outbounds.map(i => {
-  if (['🚀 手动切换'].includes(i.tag)) {
+  if (['✋ Manual'].includes(i.tag)) {
     i.outbounds.push(...getTags(proxies))
   }
-  if (['🇭🇰 香港节点'].includes(i.tag)) {
+  if (['🇭🇰 Hong Kong'].includes(i.tag)) {
     i.outbounds.push(...getTags(proxies, /港|hk|hongkong|hong kong|🇭🇰/i))
   }
-  if (['🇨🇳 台湾节点'].includes(i.tag)) {
+  if (['🇨🇳 Taiwan'].includes(i.tag)) {
     i.outbounds.push(...getTags(proxies, /台|tw|taiwan|🇹🇼/i))
   }
-  if (['🇯🇵 日本节点'].includes(i.tag)) {
+  if (['🇯🇵 Japan'].includes(i.tag)) {
     i.outbounds.push(...getTags(proxies, /日本|jp|japan|🇯🇵/i))
   }
-  if (['🇸🇬 新加坡节点'].includes(i.tag)) {
+  if (['🇸🇬 Singapore'].includes(i.tag)) {
     i.outbounds.push(...getTags(proxies, /^(?!.*(?:us)).*(新|sg|singapore|🇸🇬)/i))
   }
-  if (['🇺🇲 美国节点'].includes(i.tag)) {
+  if (['🇺🇸 USA'].includes(i.tag)) {
     i.outbounds.push(...getTags(proxies, /美|us|unitedstates|united states|🇺🇸/i))
   }
-  if (['🇰🇷 韩国节点'].includes(i.tag)) {
+  if (['🇰🇷 Korea'].includes(i.tag)) {
     i.outbounds.push(...getTags(proxies, /韩国|KR|KOR|Korea|korea|KOREA|🇰🇷/i))
+  }
+  if (['🇪🇺 Europe'].includes(i.tag)) {
+    i.outbounds.push(...getTags(proxies, /(🇩🇪|德国|\bDE\b|germany|🇫🇷|法国|\bFR\b|france|🇮🇹|意大利|\bIT\b|italy|🇪🇸|西班牙|\bES\b|spain|🇬🇧|英国|\bUK\b|united\s?kingdom)/i))
+  }
+  if (['🇹🇷 Turkey'].includes(i.tag)) {
+    i.outbounds.push(...getTags(proxies, /(🇹🇷|土耳其|\bTR\b|\bTUR\b|turkey)/i))
+  }
+  if (['🇺🇳 Others'].includes(i.tag)) {
+    i.outbounds.push(...getTags(proxies, /^((?!(🇭🇰|港|hk|🇸🇬|新加坡|sg|🇨🇳|台|tw|🇯🇵|jp|🇺🇸|us|🇰🇷|kr|DIRECT)).)*$/i))
   }
 })
 

@@ -85,14 +85,14 @@
       {"rule_set": ["geosite-cn", "geoip-cn"], "outbound": "🎯 全球直连"}
     ],
     "rule_set": [
-      {"tag": "reject_non_ip_no_drop", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://github.com/yyhhyyyyyy/sing-box-ruleset/raw/main/non_ip/reject-no-drop.srs", "download_detour": "🎯 全球直连"},
-      {"tag": "reject_non_ip_drop", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://github.com/yyhhyyyyyy/sing-box-ruleset/raw/main/non_ip/reject-drop.srs", "download_detour": "🎯 全球直连"},
-      {"tag": "reject_non_ip", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://github.com/yyhhyyyyyy/sing-box-ruleset/raw/main/non_ip/reject.srs", "download_detour": "🎯 全球直连"},
-      {"tag": "reject_domainset", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://github.com/yyhhyyyyyy/sing-box-ruleset/raw/main/domainset/reject.srs", "download_detour": "🎯 全球直连"},
-      {"tag": "reject_ip", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://github.com/yyhhyyyyyy/sing-box-ruleset/raw/main/ip/reject.srs", "download_detour": "🎯 全球直连"},
+      {"tag": "reject_non_ip_no_drop", "type": "remote", "format": "binary", "url": "https://ruleset.skk.moe/sing-box/non_ip/reject-no-drop.json", "download_detour": "🎯 全球直连"},
+      {"tag": "reject_non_ip_drop", "type": "remote", "format": "binary", "url": "https://ruleset.skk.moe/sing-box/non_ip/reject-drop.json", "download_detour": "🎯 全球直连"},
+      {"tag": "reject_non_ip", "type": "remote", "format": "binary", "url": "https://ruleset.skk.moe/sing-box/non_ip/reject.json", "download_detour": "🎯 全球直连"},
+      {"tag": "reject_domainset", "type": "remote", "format": "binary", "url": "https://ruleset.skk.moe/sing-box/domainset/reject.json", "download_detour": "🎯 全球直连"},
+      {"tag": "reject_ip", "type": "remote", "format": "binary", "url": "https://ruleset.skk.moe/sing-box/ip/reject.json", "download_detour": "🎯 全球直连"},
       
-      {"tag": "cdn_domainset", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://github.com/yyhhyyyyyy/sing-box-ruleset/raw/main/domainset/cdn.srs", "download_detour": "🎯 全球直连"},
-      {"tag": "cdn_non_ip", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://github.com/yyhhyyyyyy/sing-box-ruleset/raw/main/non_ip/cdn.srs", "download_detour": "🎯 全球直连"},
+      {"tag": "cdn_domainset", "type": "remote", "format": "binary", "url": "https://ruleset.skk.moe/sing-box/domainset/cdn.json", "download_detour": "🎯 全球直连"},
+      {"tag": "cdn_non_ip", "type": "remote", "format": "binary", "url": "https://ruleset.skk.moe/sing-box/non_ip/cdn.json", "download_detour": "🎯 全球直连"},
       
       {"tag": "geosite-youtube", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/youtube.srs", "download_detour": "🎯 全球直连"},
       
@@ -101,39 +101,39 @@
 
       {"tag": "SNTP", "type": "remote", "format": "source", "url": "https://gh-proxy.com/https://raw.githubusercontent.com/Boringahhh/ssrclash/new/singbox/config/SNTP.json", "download_detour": "🎯 全球直连"},
       
-      {"tag": "stream_non_ip", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://github.com/yyhhyyyyyy/sing-box-ruleset/raw/main/non_ip/stream.srs", "download_detour": "🎯 全球直连"},
-      {"tag": "stream_ip", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://github.com/yyhhyyyyyy/sing-box-ruleset/raw/main/ip/stream.srs", "download_detour": "🎯 全球直连"},
+      {"tag": "stream_non_ip", "type": "remote", "format": "binary", "url": "https://ruleset.skk.moe/sing-box/non_ip/stream.json", "download_detour": "🎯 全球直连"},
+      {"tag": "stream_ip", "type": "remote", "format": "binary", "url": "https://ruleset.skk.moe/sing-box/ip/stream.json", "download_detour": "🎯 全球直连"},
       
-      {"tag": "ai_non_ip", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://github.com/yyhhyyyyyy/sing-box-ruleset/raw/main/non_ip/ai.srs", "download_detour": "🎯 全球直连"},
+      {"tag": "ai_non_ip", "type": "remote", "format": "binary", "url": "https://ruleset.skk.moe/sing-box/non_ip/ai.json", "download_detour": "🎯 全球直连"},
       
-      {"tag": "telegram_non_ip", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://github.com/yyhhyyyyyy/sing-box-ruleset/raw/main/non_ip/telegram.srs", "download_detour": "🎯 全球直连"},
-      {"tag": "telegram_ip", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://github.com/yyhhyyyyyy/sing-box-ruleset/raw/main/ip/telegram.srs", "download_detour": "🎯 全球直连"},
+      {"tag": "telegram_non_ip", "type": "remote", "format": "binary", "url": "https://ruleset.skk.moe/sing-box/non_ip/telegram.json", "download_detour": "🎯 全球直连"},
+      {"tag": "telegram_ip", "type": "remote", "format": "binary", "url": "https://ruleset.skk.moe/sing-box/ip/telegram.json", "download_detour": "🎯 全球直连"},
       
-      {"tag": "apple_cdn", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://github.com/yyhhyyyyyy/sing-box-ruleset/raw/main/domainset/apple_cdn.srs", "download_detour": "🎯 全球直连"},
-      {"tag": "apple_services", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://github.com/yyhhyyyyyy/sing-box-ruleset/raw/main/non_ip/apple_services.srs", "download_detour": "🎯 全球直连"},
-      {"tag": "apple_cn_non_ip", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://github.com/yyhhyyyyyy/sing-box-ruleset/raw/main/non_ip/apple_cn.srs", "download_detour": "🎯 全球直连"},
+      {"tag": "apple_cdn", "type": "remote", "format": "binary", "url": "https://ruleset.skk.moe/sing-box/domainset/apple_cdn.json", "download_detour": "🎯 全球直连"},
+      {"tag": "apple_services", "type": "remote", "format": "binary", "url": "https://ruleset.skk.moe/sing-box/non_ip/apple_services.json", "download_detour": "🎯 全球直连"},
+      {"tag": "apple_cn_non_ip", "type": "remote", "format": "binary", "url": "https://ruleset.skk.moe/sing-box/non_ip/apple_cn.json", "download_detour": "🎯 全球直连"},
       
-      {"tag": "microsoft_cdn_non_ip", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://github.com/yyhhyyyyyy/sing-box-ruleset/raw/main/non_ip/microsoft_cdn.srs", "download_detour": "🎯 全球直连"},
-      {"tag": "microsoft_non_ip", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://github.com/yyhhyyyyyy/sing-box-ruleset/raw/main/non_ip/microsoft.srs", "download_detour": "🎯 全球直连"},
+      {"tag": "microsoft_cdn_non_ip", "type": "remote", "format": "binary", "url": "https://ruleset.skk.moe/sing-box/non_ip/microsoft_cdn.json", "download_detour": "🎯 全球直连"},
+      {"tag": "microsoft_non_ip", "type": "remote", "format": "binary", "url": "https://ruleset.skk.moe/sing-box/non_ip/microsoft.json", "download_detour": "🎯 全球直连"},
       
-      {"tag": "download_domainset", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://github.com/yyhhyyyyyy/sing-box-ruleset/raw/main/domainset/download.srs", "download_detour": "🎯 全球直连"},
-      {"tag": "download_non_ip", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://github.com/yyhhyyyyyy/sing-box-ruleset/raw/main/non_ip/download.srs", "download_detour": "🎯 全球直连"},
+      {"tag": "download_domainset", "type": "remote", "format": "binary", "url": "https://ruleset.skk.moe/sing-box/domainset/download.json", "download_detour": "🎯 全球直连"},
+      {"tag": "download_non_ip", "type": "remote", "format": "binary", "url": "https://ruleset.skk.moe/sing-box/non_ip/download.json", "download_detour": "🎯 全球直连"},
       
       {"tag": "geosite-steamcn", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/steam@cn.srs", "download_detour": "🎯 全球直连"},
       {"tag": "geosite-steam", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/steam.srs", "download_detour": "🎯 全球直连"},
 
       {"tag": "WeChat_domain", "type": "remote", "format": "source", "url": "https://gh-proxy.com/https://raw.githubusercontent.com/Boringahhh/ssrclash/new/singbox/config/WeChat.json", "download_detour": "🎯 全球直连"},
       
-      {"tag": "lan_non_ip", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://github.com/yyhhyyyyyy/sing-box-ruleset/raw/main/non_ip/lan.srs", "download_detour": "🎯 全球直连"},
-      {"tag": "lan_ip", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://github.com/yyhhyyyyyy/sing-box-ruleset/raw/main/ip/lan.srs", "download_detour": "🎯 全球直连"},
-      {"tag": "domestic_non_ip", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://github.com/yyhhyyyyyy/sing-box-ruleset/raw/main/non_ip/domestic.srs", "download_detour": "🎯 全球直连"},
-      {"tag": "direct_non_ip", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://github.com/yyhhyyyyyy/sing-box-ruleset/raw/main/non_ip/direct.srs", "download_detour": "🎯 全球直连"},
+      {"tag": "lan_non_ip", "type": "remote", "format": "binary", "url": "https://ruleset.skk.moe/sing-box/non_ip/lan.json", "download_detour": "🎯 全球直连"},
+      {"tag": "lan_ip", "type": "remote", "format": "binary", "url": "https://ruleset.skk.moe/sing-box/ip/lan.json", "download_detour": "🎯 全球直连"},
+      {"tag": "domestic_non_ip", "type": "remote", "format": "binary", "url": "https://ruleset.skk.moe/sing-box/non_ip/domestic.json", "download_detour": "🎯 全球直连"},
+      {"tag": "direct_non_ip", "type": "remote", "format": "binary", "url": "https://ruleset.skk.moe/sing-box/non_ip/direct.json", "download_detour": "🎯 全球直连"},
       
-      {"tag": "global_non_ip", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://github.com/yyhhyyyyyy/sing-box-ruleset/raw/main/non_ip/global.srs", "download_detour": "🎯 全球直连"},
+      {"tag": "global_non_ip", "type": "remote", "format": "binary", "url": "https://ruleset.skk.moe/sing-box/non_ip/global.json", "download_detour": "🎯 全球直连"},
       {"tag": "geosite-!cn", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/geolocation-!cn.srs", "download_detour": "🎯 全球直连"},
       
-      {"tag": "domestic_ip", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://github.com/yyhhyyyyyy/sing-box-ruleset/raw/main/ip/domestic.srs", "download_detour": "🎯 全球直连"},
-      {"tag": "china_ip", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://github.com/yyhhyyyyyy/sing-box-ruleset/raw/main/ip/china_ip.srs", "download_detour": "🎯 全球直连"},
+      {"tag": "domestic_ip", "type": "remote", "format": "binary", "url": "https://ruleset.skk.moe/sing-box/ip/domestic.json", "download_detour": "🎯 全球直连"},
+      {"tag": "china_ip", "type": "remote", "format": "binary", "url": "https://ruleset.skk.moe/sing-box/ip/china_ip.json", "download_detour": "🎯 全球直连"},
       
       {"tag": "geosite-cn", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/cn.srs", "download_detour": "🎯 全球直连"},
       {"tag": "geoip-cn", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://github.com/qljsyph/ruleset-icon/raw/refs/heads/main/sing-box/geoip/China-ASN-combined-ip.srs", "download_detour": "🎯 全球直连"}

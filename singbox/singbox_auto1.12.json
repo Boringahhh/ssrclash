@@ -99,8 +99,6 @@
       {"rule_set": ["geosite-cn", "geoip-cn"], "outbound": "🎯 Direct"}
     ],
     "rule_set": [
-      {"tag": "amend_direct", "type": "remote", "format": "source", "url": "https://gh-proxy.org/https://raw.githubusercontent.com/Boringahhh/ssrclash/new/singbox/config/Direct.json", "download_detour": "🎯 Direct"},
-
       {"tag": "reject_non_ip_no_drop", "type": "remote", "format": "source", "url": "https://ruleset.skk.moe/sing-box/non_ip/reject-no-drop.json", "download_detour": "🎯 Direct"},
       {"tag": "reject_non_ip_drop", "type": "remote", "format": "source", "url": "https://ruleset.skk.moe/sing-box/non_ip/reject-drop.json", "download_detour": "🎯 Direct"},
       {"tag": "reject_non_ip", "type": "remote", "format": "source", "url": "https://ruleset.skk.moe/sing-box/non_ip/reject.json", "download_detour": "🎯 Direct"},

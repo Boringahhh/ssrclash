@@ -3,6 +3,8 @@ DOMAIN-SUFFIX,media.nijigem.by
 DOMAIN-SUFFIX,embyplus.org
 DOMAIN-SUFFIX,emby.bangumi.ca
 DOMAIN-SUFFIX,genshin.biliblili.uk
+DOMAIN-SUFFIX,ciallo.party
+DOMAIN-SUFFIX,yuanshen.help
 
 # SNTPEmby 影院
 IP-CIDR,83.147.61.152/32,no-resolve'

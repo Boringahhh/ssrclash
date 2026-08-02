@@ -7,20 +7,20 @@
   "dns": {
     "servers": [
       {"tag": "local", "type": "udp", "server": "223.5.5.5"},
-      {"tag": "public", "type": "https", "server": "dns.alidns.com", "domain_resolver": "local"},
+      {"tag": "public", "type": "https", "server": "223.5.5.5"},
       {"tag": "foreign", "type": "https", "server": "8.8.8.8", "detour": "🪁 Nodes"},
       {"tag": "fakeip", "type": "fakeip", "inet4_range": "198.18.0.0/15", "inet6_range": "fc00::/18"}
     ],
     "rules": [
-      {"clash_mode": "direct", "server": "local"},
-      {"clash_mode": "global", "server": "fakeip"},
+      {"clash_mode": "direct", "server": "public"},
       {"query_type": "HTTPS", "action": "reject"},
+      {"clash_mode": "global", "server": "fakeip"},
       {"domain_suffix": ["services.googleapis.cn", "googleapis.cn", "xn--ngstr-lra8j.com"], "server": "foreign"},
-      {"rule_set": ["geosite-cn", "geosite-steamcn", "apple_cdn", "apple_cn_non_ip", "domestic_non_ip", "lan_non_ip", "direct_non_ip"], "server": "local"},
-      {"query_type": ["A", "AAAA"], "server": "fakeip", "rewrite_ttl": 1}
+      {"rule_set": ["geosite-cn", "geosite-steamcn", "apple_cdn", "apple_cn_non_ip", "domestic_non_ip", "lan_non_ip", "direct_non_ip"], "server": "public"},
+      {"query_type": ["A", "AAAA"], "server": "fakeip", "rewrite_ttl": 60}
     ],
     "final": "foreign",
-    "strategy": "ipv4_only",
+    "strategy": "prefer_ipv4",
     "independent_cache": true,
     "reverse_mapping": true
   },
@@ -28,27 +28,28 @@
     "enabled": true,
     "server": "time.apple.com",
     "server_port": 123,
-    "interval": "30m0s",
-    "detour": "direct"
+    "interval": "30m",
+    "detour": "🎯 Direct"
   },
   "inbounds": [
     {
+      "type": "mixed",
+      "tag": "mixed-in",
+      "listen": "0.0.0.0",
+      "listen_port": 7890
+    },
+    {
       "type": "tun",
+      "tag": "tun-in",
       "address": [
         "172.19.0.1/30",
         "fdfe:dcba:9876::1/126"
       ],
-      "platform": {
-        "http_proxy": {
-          "enabled": true,
-          "server": "127.0.0.1",
-          "server_port": 7890
-        }
-      },
       "mtu": 9000,
       "auto_route": true,
       "auto_redirect": false,
-      "strict_route": true
+      "strict_route": true,
+      "stack": "mixed"
     }
   ],
   "route": {
@@ -59,8 +60,10 @@
       {"clash_mode": "direct", "outbound": "🎯 Direct"},
       {"clash_mode": "global", "outbound": "GLOBAL"},
       {"rule_set": ["amend_direct"], "outbound": "🎯 Direct"},
-      {"rule_set": ["reject_non_ip", "reject_non_ip_no_drop", "reject_domainset"], "outbound": "block"},
-      {"rule_set": ["reject_ip"], "outbound": "block"},
+      {"rule_set": ["reject_non_ip_drop"], "action": "reject", "method": "drop"},
+      {"rule_set": ["reject_non_ip", "reject_domainset"], "action": "route", "outbound": "🛑 AdBlock"},
+      {"rule_set": ["reject_non_ip_no_drop"], "action": "reject", "no_drop": true},
+      {"rule_set": ["reject_ip"], "action": "route", "outbound": "🛑 AdBlock"},
       {"rule_set": ["cdn_domainset", "cdn_non_ip"], "outbound": "🪁 Nodes"},
       {"rule_set": ["Spotify_domain"], "outbound": "🎼 Spotify"},
       {"rule_set": ["stream_hk_non_ip"], "outbound": "📹 HK&TW Media"},
@@ -171,29 +174,31 @@
     "default_domain_resolver": {"server": "public"}
   },
   "outbounds": [
-    {"tag": "🪁 Nodes", "type": "selector", "outbounds": ["🇭🇰 Hong Kong", "🇸🇬 Singapore", "🇨🇳 Taiwan", "🇯🇵 Japan", "🇰🇷 Korea", "🇺🇸 USA", "✋ Manual", "🎯 Direct"]},
-    {"tag": "💾 Download", "type": "selector", "outbounds": ["🎯 Direct", "🪁 Nodes", "🇭🇰 Hong Kong", "🇸🇬 Singapore", "🇨🇳 Taiwan", "🇯🇵 Japan", "🇰🇷 Korea", "🇺🇸 USA", "✋ Manual"]},
-    {"tag": "💬 Telegram", "type": "selector", "outbounds": ["🇸🇬 Singapore", "🇭🇰 Hong Kong", "🇯🇵 Japan", "🇺🇸 USA", "🪁 Nodes", "✋ Manual"]},
-    {"tag": "🎼 Spotify", "type": "selector", "outbounds": ["🪁 Nodes", "🇭🇰 Hong Kong", "🇸🇬 Singapore", "🇨🇳 Taiwan", "🇯🇵 Japan", "🇰🇷 Korea", "🇺🇸 USA", "🇹🇷 Turkey", "🇺🇳 Others", "✋ Manual"]},
-    {"tag": "🎮 Gaming", "type": "selector", "outbounds": ["🎯 Direct", "🪁 Nodes", "🇭🇰 Hong Kong", "🇸🇬 Singapore", "🇨🇳 Taiwan", "🇯🇵 Japan", "🇰🇷 Korea", "🇺🇸 USA", "🇹🇷 Turkey", "🇺🇳 Others", "✋ Manual"]},
-    {"tag": "📹 Global Media", "type": "selector", "outbounds": ["🪁 Nodes", "🇭🇰 Hong Kong", "🇸🇬 Singapore", "🇨🇳 Taiwan", "🇯🇵 Japan", "🇰🇷 Korea", "🇺🇸 USA", "✋ Manual"]},
-    {"tag": "📹 HK&TW Media", "type": "selector", "outbounds": ["🎯 Direct", "🪁 Nodes", "🇭🇰 Hong Kong", "🇸🇬 Singapore", "🇨🇳 Taiwan", "🇯🇵 Japan", "🇰🇷 Korea", "🇺🇸 USA", "✋ Manual"]},
-    {"tag": "🎥 Emby", "type": "selector", "outbounds": ["🪁 Nodes", "🇭🇰 Hong Kong", "🇸🇬 Singapore", "🇨🇳 Taiwan", "🇯🇵 Japan", "🇰🇷 Korea", "🇺🇸 USA", "✋ Manual"]},
-    {"tag": "🤖 AIGC", "type": "selector", "outbounds": ["🇺🇸 USA", "🇭🇰 Hong Kong", "🇸🇬 Singapore", "🇨🇳 Taiwan", "🇯🇵 Japan", "🇰🇷 Korea", "🇪🇺 Europe"]},
-    {"tag": "💾 Microsoft", "type": "selector", "outbounds": ["🎯 Direct", "🪁 Nodes", "🇭🇰 Hong Kong", "🇸🇬 Singapore", "🇨🇳 Taiwan", "🇯🇵 Japan", "🇰🇷 Korea", "🇺🇸 USA", "✋ Manual"]},
-    {"tag": "🍎 Apple", "type": "selector", "outbounds": ["🎯 Direct", "🇭🇰 Hong Kong", "🇸🇬 Singapore", "🇨🇳 Taiwan", "🇯🇵 Japan", "🇰🇷 Korea", "🇺🇸 USA"]},
-    {"tag": "🐟 Fallback", "type": "selector", "outbounds": ["🪁 Nodes", "🇭🇰 Hong Kong", "🇸🇬 Singapore", "🇨🇳 Taiwan", "🇯🇵 Japan", "🇰🇷 Korea", "🇺🇸 USA", "🎯 Direct"]},
+    {"tag": "🪁 Nodes", "type": "selector", "outbounds": ["🇭🇰 Hong Kong", "🇸🇬 Singapore", "🇨🇳 Taiwan", "🇯🇵 Japan", "🇰🇷 Korea", "🇺🇸 USA", "💠 Backup", "✋ Manual", "🎯 Direct"]},
+    {"tag": "💾 Download", "type": "selector", "outbounds": ["🎯 Direct", "🪁 Nodes", "🇭🇰 Hong Kong", "🇸🇬 Singapore", "🇨🇳 Taiwan", "🇯🇵 Japan", "🇰🇷 Korea", "🇺🇸 USA", "💠 Backup", "✋ Manual"]},
+    {"tag": "💬 Telegram", "type": "selector", "outbounds": ["🇸🇬 Singapore", "🇭🇰 Hong Kong", "🇯🇵 Japan", "🇺🇸 USA", "🪁 Nodes", "💠 Backup", "✋ Manual"]},
+    {"tag": "🎼 Spotify", "type": "selector", "outbounds": ["🪁 Nodes", "🇭🇰 Hong Kong", "🇸🇬 Singapore", "🇨🇳 Taiwan", "🇯🇵 Japan", "🇰🇷 Korea", "🇺🇸 USA", "🇹🇷 Turkey", "🇺🇳 Others", "💠 Backup", "✋ Manual"]},
+    {"tag": "🎮 Gaming", "type": "selector", "outbounds": ["🎯 Direct", "🪁 Nodes", "🇭🇰 Hong Kong", "🇸🇬 Singapore", "🇨🇳 Taiwan", "🇯🇵 Japan", "🇰🇷 Korea", "🇺🇸 USA", "🇹🇷 Turkey", "🇺🇳 Others", "💠 Backup", "✋ Manual"]},
+    {"tag": "📹 Global Media", "type": "selector", "outbounds": ["🪁 Nodes", "🇭🇰 Hong Kong", "🇸🇬 Singapore", "🇨🇳 Taiwan", "🇯🇵 Japan", "🇰🇷 Korea", "🇺🇸 USA", "💠 Backup", "✋ Manual"]},
+    {"tag": "📹 HK&TW Media", "type": "selector", "outbounds": ["🎯 Direct", "🪁 Nodes", "🇭🇰 Hong Kong", "🇸🇬 Singapore", "🇨🇳 Taiwan", "🇯🇵 Japan", "🇰🇷 Korea", "🇺🇸 USA", "💠 Backup", "✋ Manual"]},
+    {"tag": "🎥 Emby", "type": "selector", "outbounds": ["🪁 Nodes", "🇭🇰 Hong Kong", "🇸🇬 Singapore", "🇨🇳 Taiwan", "🇯🇵 Japan", "🇰🇷 Korea", "🇺🇸 USA", "💠 Backup", "✋ Manual"]},
+    {"tag": "🤖 AIGC", "type": "selector", "outbounds": ["🇺🇸 USA", "🇭🇰 Hong Kong", "🇸🇬 Singapore", "🇨🇳 Taiwan", "🇯🇵 Japan", "🇰🇷 Korea", "🇪🇺 Europe", "💠 Backup"]},
+    {"tag": "💾 Microsoft", "type": "selector", "outbounds": ["🎯 Direct", "🪁 Nodes", "🇭🇰 Hong Kong", "🇸🇬 Singapore", "🇨🇳 Taiwan", "🇯🇵 Japan", "🇰🇷 Korea", "🇺🇸 USA", "💠 Backup", "✋ Manual"]},
+    {"tag": "🍎 Apple", "type": "selector", "outbounds": ["🎯 Direct", "🇭🇰 Hong Kong", "🇸🇬 Singapore", "🇨🇳 Taiwan", "🇯🇵 Japan", "🇰🇷 Korea", "🇺🇸 USA", "💠 Backup"]},
+    {"tag": "🐟 Fallback", "type": "selector", "outbounds": ["🪁 Nodes", "🇭🇰 Hong Kong", "🇸🇬 Singapore", "🇨🇳 Taiwan", "🇯🇵 Japan", "🇰🇷 Korea", "🇺🇸 USA", "💠 Backup", "🎯 Direct"]},
     
-    {"tag": "✋ Manual", "type": "urltest", "outbounds": [], "url": "http://cp.cloudflare.com", "interval": "5m", "tolerance": 20},
+    {"tag": "✋ Manual", "type": "selector", "outbounds": []},
     {"tag": "🇭🇰 Hong Kong", "type": "urltest", "outbounds": [], "url": "http://cp.cloudflare.com", "interval": "5m", "tolerance": 20},
     {"tag": "🇸🇬 Singapore", "type": "urltest", "outbounds": [], "url": "http://cp.cloudflare.com", "interval": "5m", "tolerance": 20},
     {"tag": "🇨🇳 Taiwan", "type": "urltest", "outbounds": [], "url": "http://cp.cloudflare.com", "interval": "5m", "tolerance": 20},
     {"tag": "🇯🇵 Japan", "type": "urltest", "outbounds": [], "url": "http://cp.cloudflare.com", "interval": "5m", "tolerance": 20},
     {"tag": "🇰🇷 Korea", "type": "urltest", "outbounds": [], "url": "http://cp.cloudflare.com", "interval": "5m", "tolerance": 20},
     {"tag": "🇺🇸 USA", "type": "urltest", "outbounds": [], "url": "http://cp.cloudflare.com", "interval": "5m", "tolerance": 20},
-    {"tag": "🇪🇺 Europe", "type": "urltest", "outbounds": [], "url": "http://cp.cloudflare.com", "interval": "5m", "tolerance": 20},
-    {"tag": "🇹🇷 Turkey", "type": "urltest", "outbounds": [], "url": "http://cp.cloudflare.com", "interval": "5m", "tolerance": 20},
-    {"tag": "🇺🇳 Others", "type": "urltest", "outbounds": [], "url": "http://cp.cloudflare.com", "interval": "5m", "tolerance": 20},
+    {"tag": "🇪🇺 Europe", "type": "selector", "outbounds": []},
+    {"tag": "🇹🇷 Turkey", "type": "selector", "outbounds": []},
+    {"tag": "🇺🇳 Others", "type": "selector", "outbounds": []},
+    {"tag": "💠 Backup", "type": "selector", "outbounds": []},
+    {"tag": "🛑 AdBlock", "type": "selector", "outbounds": [ "block", "🎯 Direct", "🪁 Nodes"], "default": "block"},
 
     {"tag": "GLOBAL", "type": "selector", "outbounds": ["🪁 Nodes", "🇭🇰 Hong Kong", "🇸🇬 Singapore", "🇨🇳 Taiwan", "🇯🇵 Japan", "🇰🇷 Korea", "🇺🇸 USA", "✋ Manual", "🎯 Direct"], "default": "🎯 Direct"},
     {"tag": "🎯 Direct", "type": "direct"},

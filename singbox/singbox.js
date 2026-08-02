@@ -46,6 +46,9 @@ config.outbounds.map(i => {
   if (['🇺🇳 Others'].includes(i.tag)) {
     i.outbounds.push(...getTags(proxies, /^((?!(🇭🇰|港|hk|🇸🇬|新加坡|sg|🇨🇳|台|tw|🇯🇵|jp|🇺🇸|us|🇰🇷|kr|DIRECT)).)*$/i))
   }
+  if (['💠 Backup'].includes(i.tag)) {
+    i.outbounds.push(...getTags(proxies))
+  }
 })
 
 config.outbounds.forEach(outbound => {

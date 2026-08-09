@@ -40,7 +40,6 @@ ipv6: false
 find-process-mode: strict
 unified-delay: true
 tcp-concurrent: true
-global-client-fingerprint: chrome
 
 # 外部控制(API) 如果使用的是裸核，需要将下面的注释#去掉，方便ui界面的使用
 # external-controller: 0.0.0.0:9090
@@ -366,7 +365,7 @@ rule-providers:
   SteamCN_domain: 
     <<: *domain
     url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/steam@cn.mrs"
-    path: ./ruleset/Steam_domain.mrs
+    path: ./ruleset/SteamCN_domain.mrs
   Steam_domain:
     <<: *domain
     url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/steam.mrs"

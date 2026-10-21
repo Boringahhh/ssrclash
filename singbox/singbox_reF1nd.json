@@ -13,7 +13,7 @@
       "url": "url",
       "http_client": "s-download",
       "exclude": "节点|剩余|套餐|客服|官网",
-      "initial_path": "./source/Provider1.json",
+      "path": "./source/Provider1.json",
       "update_interval": "24h",
       "health_check": {"enabled":true,"url":"http://cp.cloudflare.com/generate_204","interval":"30m","timeout":"3s"}
     }

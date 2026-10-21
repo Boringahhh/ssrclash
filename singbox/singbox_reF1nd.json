@@ -24,7 +24,7 @@
       "headers": {
         "User-Agent": "clash.meta/mihomo/alpha"
       },
-      "detour": "🎯 Direct"
+      "detour": "🪁 Nodes"
     }
   ],
   "dns": {
@@ -186,7 +186,6 @@
       {"rule_set": ["lan_ip", "domestic_ip", "china_ip"], "outbound": "🎯 Direct"},
       {"rule_set": ["geosite-cn", "geoip-cn"], "outbound": "🎯 Direct"}
     ],
-
     "rule_set": [
       {"tag": ["fakeip-filter-cn", "fakeip-filter-!cn"], "type": "remote", "format": "source", "url": "https://gh-proxy.org/https://raw.githubusercontent.com/Boringahhh/ssrclash/new/singbox/config/{tag}.json"},
 
@@ -307,7 +306,7 @@
       "external_controller": "0.0.0.0:9095",
       "external_ui": "./run/ui",
       "external_ui_download_url": "https://gh-proxy.com/https://github.com/rainac1/zashboard/releases/latest/download/dist.zip",
-      "external_ui_download_detour": "🎯 Direct",
+      "external_ui_http_client": "s-download",
       "secret": "",
       "default_mode": "rule"
     }
